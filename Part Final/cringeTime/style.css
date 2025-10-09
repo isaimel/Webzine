@@ -1,0 +1,203 @@
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    color: white;
+    margin: 0;
+    padding: 1rem  1rem 1rem 1rem;
+    overflow-x: hidden;
+}
+.funny{
+    max-width: fit-content;
+}
+#link{
+    color: inherit;
+}
+#title {
+    color: white;
+    font-size: 10rem;
+}
+#written {
+    color: cyan;
+    font-size: 4.5rem;
+}
+
+#produced {
+    color: gold;
+    font-size: 4rem;
+}
+
+#funded {
+    color: red;
+    font-size: 3.5rem;
+}
+
+#partnership {
+    color: darkorchid;
+    font-size: 3rem;
+}
+
+#special {
+    color: deeppink;
+    font-size: 2.5rem;
+}
+
+#catered {
+    color: cyan;
+    font-size: 2rem;
+}
+
+#dedicated {
+    color: gold;
+    font-size: 3rem;
+}
+
+#memoriam {
+    color: red;
+    font-size: 3.5rem;
+}
+
+#composed {
+    color: darkorchid;
+    font-size: 4rem;
+}
+
+#authored {
+    color: deeppink;
+    font-size: 4.5rem;
+}
+
+#contribution {
+    color: cyan;
+    font-size: 5rem;
+}
+#shittyLoveSong{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0;
+}
+
+@media only screen and (max-width: 1080px) {
+#title{
+    font-size: 8rem;
+}
+#written {
+    color: cyan;
+    font-size: 3.5rem;
+}
+
+#produced {
+    color: gold;
+    font-size: 3rem;
+}
+
+#funded {
+    color: red;
+    font-size: 2.5rem;
+}
+
+#partnership {
+    color: darkorchid;
+    font-size: 2rem;
+}
+
+#special {
+    color: deeppink;
+    font-size: 1.5rem;
+}
+
+#catered {
+    color: cyan;
+    font-size: 1rem;
+}
+
+#dedicated {
+    color: gold;
+    font-size: 2rem;
+}
+
+#memoriam {
+    color: red;
+    font-size: 2.5rem;
+}
+
+#composed {
+    color: darkorchid;
+    font-size: 3rem;
+}
+
+#authored {
+    color: deeppink;
+    font-size: 3.5rem;
+}
+
+#contribution {
+    color: cyan;
+    font-size: 4rem;
+}
+}
+
+@media only screen and (max-width: 780px) {
+#title{
+    font-size: 6rem;
+    bottom: 1rem;
+}
+#written {
+    color: cyan;
+    font-size: 2.5rem;
+}
+
+#produced {
+    color: gold;
+    font-size: 2rem;
+}
+
+#funded {
+    color: red;
+    font-size: 1.5rem;
+}
+
+#partnership {
+    color: darkorchid;
+    font-size: 1rem;
+}
+
+#special {
+    color: deeppink;
+    font-size: 0.5rem;
+}
+
+#catered {
+    color: cyan;
+    font-size: 0.5rem;
+}
+
+#dedicated {
+    color: gold;
+    font-size: 1rem;
+}
+
+#memoriam {
+    color: red;
+    font-size: 1.5rem;
+}
+
+#composed {
+    color: darkorchid;
+    font-size: 2rem;
+}
+
+#authored {
+    color: deeppink;
+    font-size: 2.5rem;
+}
+
+#contribution {
+    color: cyan;
+    font-size: 3rem;
+}
+
+}

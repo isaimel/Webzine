@@ -1,0 +1,132 @@
+body{
+  display: grid;
+  grid-template-columns: 6rem 80vw;
+  grid-template-rows: 6rem 80rem;
+  background-color: black;
+  justify-content: left;
+  margin: 0rem 0rem 0rem 0rem;
+}
+#songChoice{
+  font-size: 2rem;
+}
+#headerDef{
+  grid-column: 2;
+  grid-row: 1;
+  position: fixed;
+  left:6rem;
+  background-color: red;
+  z-index: 3;
+  font-size: 3rem;
+}
+#returnLink{
+  position: fixed;
+  grid-column: 1;
+  grid-row: 2;
+  bottom: .5rem;
+  right: .5rem
+}
+a{
+    color: white;
+}
+.header{
+  top: 1rem;
+  grid-column: 1;
+  grid-row: 1 / -1;
+  position: fixed;
+  color: white;
+  mix-blend-mode: difference;
+  z-index: 2;
+  font-size: 4rem;
+  z-index: 2;
+  left:1rem;
+  writing-mode: vertical-lr
+}
+.loveText{
+  grid-column: 2 / span 4;
+  grid-row: 2;
+  color: white;
+  text-align: left;
+  font-size: 18rem;
+  line-height: 16rem;
+  align-items: start;
+}
+#firstLove { 
+  animation: fadeOut 5s ease-in 0s infinite;
+}
+#secondLove{ 
+  animation: fadeOut 5s ease-in-out 1s infinite; 
+}
+#thirdLove { 
+  animation: fadeOut 5s ease-in-out 2s infinite; 
+}
+#fourthLove { 
+  animation: fadeOut 5s ease-in-out 3s infinite; 
+}
+#fifthLove { 
+  animation: fadeOut 5s ease-in-out 4s infinite; 
+}
+#sixthLove { 
+  animation: fadeOut 5s ease-in-out 5s infinite; 
+}
+#seventhLove { 
+  animation: fadeOut 5s ease-in-out 6s infinite; 
+}
+#eighthLove { 
+  animation: fadeOut 5s ease-in-out 7s infinite; 
+}
+#ninthLove { 
+  animation: fadeOut 5s ease-in-out 8s infinite; 
+}
+#tenthLove { 
+  animation: fadeOut 5s ease-in-out 9s infinite; 
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    color: white;
+    transform: translateX(0);
+  }
+  40% {
+    opacity: 1;
+    color: crimson;
+
+  }
+  60% {
+    opacity: 0;
+    color: black;
+    transform: translateX(2rem);
+
+  }
+  80% {
+    opacity: 1;
+    color: white;
+    transform: translateX(-.2rem);
+
+  }
+  100% {
+    opacity: 1;
+    color: white;
+    transform: translateX(0);
+
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+.loveText{
+  font-size: 12rem;
+  line-height: 18rem;
+
+  }
+#headerDef{
+  font-size: 2.5rem;
+}
+}
+@media only screen and (max-width: 780px) {
+.loveText{
+  font-size: 8rem;
+  line-height: 11rem;
+  }
+#headerDef{
+  font-size: 2rem;
+}
+}

@@ -1,0 +1,219 @@
+body{
+    display: grid;
+    grid-template-rows: 95vh;
+    grid-template-columns: 16rem repeat(7, 95vh);
+    overflow-x:scroll;
+    overflow-y: hidden;
+    background-color: black;
+    color: white;
+    gap: 1rem;
+}
+.link{
+    color: inherit;
+    font-size: 1rem;
+}
+.introduction{
+    padding: 0rem 1rem 0rem 0rem;
+    font-size: 2rem;
+    color: cyan;
+}
+#devilImg, #letImg, #lovingImg, #moodyImg, #pretendImg, #wayImg, #wonderImg {
+    z-index: 1;
+    grid-row: 1;
+    width: 100%;
+    height: auto;
+}
+#devilImg { 
+    grid-column: 2; 
+}
+#letImg { 
+    grid-column: 3; 
+}
+#lovingImg { 
+    grid-column: 4; 
+}
+#moodyImg { 
+    grid-column: 5; 
+}
+#pretendImg { 
+    grid-column: 6; 
+}
+#wayImg { 
+    grid-column: 7; 
+}
+#wonderImg { 
+    grid-column: 8; 
+}
+
+#elvisDevil, #elvisLet, #elvisLoving, #elvisMoody, #elvisPretend, #elvisWay, #elvisWonder {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    grid-row: 1;
+    text-align: center;
+    place-items: center;
+}
+
+#elvisDevil {
+     grid-column: 2; 
+}
+#elvisLet {
+     grid-column: 3; 
+}
+#elvisLoving {
+     grid-column: 4; 
+}
+#elvisMoody {
+     grid-column: 5; 
+}
+#elvisPretend {
+     grid-column: 6; 
+}
+#elvisWay {
+     grid-column: 7; 
+}
+#elvisWonder {
+     grid-column: 8; 
+}
+
+#devilText, #letText, #lovingText, #moodyText, #pretendText, #wayText, #wonderText {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    grid-row: 1;
+    display: block;
+    flex-direction: column;
+    overflow-y: scroll;
+    text-align: left;
+    font-size: 1.6rem;
+}
+p{
+    padding-left: 1rem;
+}
+#devilText { 
+    grid-column: 2; 
+}
+#letText { 
+    grid-column: 3; 
+}
+#lovingText { 
+    grid-column: 4; 
+}
+#moodyText { 
+    grid-column: 5; 
+}
+#pretendText { 
+    grid-column: 6; 
+}
+#wayText { 
+    grid-column: 7; 
+}
+#wonderText { 
+    grid-column: 8; 
+}
+
+
+@media only screen and (max-width: 780px) {
+
+    body{
+        display: grid;
+        grid-template-rows: 16rem repeat(7, 95vw);
+        grid-template-columns: 95vw;
+        overflow-y:scroll;
+        overflow-x: hidden;
+    }
+    .introduction{
+        padding: 0rem 1rem 0rem 0rem;
+        font-size: 1.6rem;
+        color: cyan;
+    }
+    #devilImg, #letImg, #lovingImg, #moodyImg, #pretendImg, #wayImg, #wonderImg {
+        grid-column: 1;
+    }
+    #devilImg { 
+        grid-row: 2; 
+    }
+    #letImg { 
+        grid-row: 3; 
+    }
+    #lovingImg { 
+        grid-row: 4; 
+    }
+    #moodyImg { 
+        grid-row: 5; 
+    }
+    #pretendImg { 
+        grid-row: 6; 
+    }
+    #wayImg { 
+        grid-row: 7; 
+    }
+    #wonderImg { 
+        grid-row: 8; 
+    }
+
+    #elvisDevil, #elvisLet, #elvisLoving, #elvisMoody, #elvisPretend, #elvisWay, #elvisWonder {
+        grid-column: 1;
+    }
+
+    #elvisDevil {
+        grid-row: 2; 
+    }
+    #elvisLet {
+        grid-row: 3; 
+    }
+    #elvisLoving {
+        grid-row: 4; 
+    }
+    #elvisMoody {
+        grid-row: 5; 
+    }
+    #elvisPretend {
+        grid-row: 6; 
+    }
+    #elvisWay {
+        grid-row: 7; 
+    }
+    #elvisWonder {
+        grid-row: 8; 
+    }
+
+    #devilText, #letText, #lovingText, #moodyText, #pretendText, #wayText, #wonderText {
+        grid-column: 1;
+        overflow-y: scroll;
+    }
+    #devilText { 
+        grid-row: 2; 
+    }
+    #letText { 
+        grid-row: 3; 
+    }
+    #lovingText { 
+        grid-row: 4; 
+    }
+    #moodyText { 
+        grid-row: 5; 
+    }
+    #pretendText { 
+        grid-row: 6; 
+    }
+    #wayText { 
+        grid-row: 7; 
+    }
+    #wonderText { 
+        grid-row: 8; 
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .introduction{
+        padding: 0rem 1rem 0rem 0rem;
+        font-size: 1rem;
+        color: cyan;
+    }
+#devilText, #letText, #lovingText, #moodyText, #pretendText, #wayText, #wonderText {
+    font-size: 1rem;
+}
+}

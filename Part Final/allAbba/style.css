@@ -1,0 +1,258 @@
+body{
+    display: grid;
+    grid-template-rows: 47vh 47vh;
+    grid-template-columns: repeat(4, 47vh);
+    overflow-x:scroll;
+    overflow-y: hidden;
+    background-color: black;
+    color: white;
+    gap: 1rem;
+}
+.link{
+    color: inherit;
+    font-size: 1rem;
+}
+.introduction{
+    grid-row: 1;
+    grid-column: 2;
+    padding: 0rem 1rem 0rem 0rem;
+    font-size: 1.4rem;
+    color: hotpink;
+}
+#andanteImg, #eyesImg, #layImg, #SOSImg, #trouperImg, #usImg, #winnerImg {
+    z-index: 1;
+    grid-row: 1;
+    width: 100%;
+    height: auto;
+}
+#andanteImg { 
+    grid-row: 1;
+    grid-column: 1; 
+}
+#eyesImg { 
+    grid-row: 1;
+    grid-column: 3; 
+}
+#layImg { 
+    grid-row: 1;
+    grid-column: 4; 
+}
+#SOSImg { 
+    grid-row: 2;
+    grid-column: 1; 
+}
+#trouperImg { 
+    grid-row: 2;
+    grid-column: 2; 
+}
+#usImg { 
+    grid-row: 2;
+    grid-column: 3; 
+}
+#winnerImg { 
+    grid-row: 2;
+    grid-column: 4; 
+}
+
+#abbaAndante, #abbaEyes, #abbaLay, #abbaSOS, #abbaTrouper, #abbaUs, #abbaWinner {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    grid-row: 1;
+    text-align: center;
+    place-items: center;
+}
+
+#abbaAndante {
+    grid-row: 1;
+    grid-column: 1; 
+}
+#abbaEyes {
+    grid-row: 1;
+    grid-column: 3; 
+}
+#abbaLay {
+    grid-row: 1;
+    grid-column: 4; 
+}
+#abbaSOS {
+    grid-row: 2;
+    grid-column: 1; 
+}
+#abbaTrouper {
+    grid-row: 2;
+    grid-column: 2; 
+}
+#abbaUs {
+    grid-row: 2;
+    grid-column: 3; 
+}
+#abbaWinner {
+    grid-row: 2;
+    grid-column: 4; 
+}
+
+#andanteText, #eyesText, #layText, #SOSText, #trouperText, #usText, #winnerText {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    grid-row: 1;
+    display: block;
+    flex-direction: column;
+    overflow-y: scroll;
+    text-align: left;
+    font-size: 1.2rem;
+}
+p{
+    padding-left: 1rem;
+}
+#andanteText { 
+    grid-row: 1;
+    grid-column: 1 
+}
+#eyesText { 
+    grid-row: 1;
+    grid-column: 3; 
+}
+#layText { 
+    grid-row: 1;
+    grid-column: 4; 
+}
+#SOSText { 
+    grid-row: 2;
+    grid-column: 1; 
+}
+#trouperText { 
+    grid-row: 2;
+    grid-column: 2; 
+}
+#usText { 
+    grid-row: 2;
+    grid-column: 3; 
+}
+#winnerText { 
+    grid-row: 2;
+    grid-column: 4; 
+}
+
+
+@media only screen and (max-width: 780px) {
+
+    body{
+        display: grid;
+        grid-template-rows: repeat(4, 50vw);
+        grid-template-columns: 50vw 50vw;
+        overflow-y:scroll;
+        overflow-x: hidden;
+    }
+    .introduction{
+        grid-column: 1;
+        grid-row: 2;
+        padding: 0rem 1rem 0rem 0rem;
+        font-size: 1.2rem;
+    }
+    #andanteImg { 
+        grid-row: 1;
+        grid-column: 1; 
+    }
+    #eyesImg { 
+        grid-row: 1;
+        grid-column: 2; 
+    }
+    #layImg { 
+        grid-row: 2;
+        grid-column: 2; 
+    }
+    #SOSImg { 
+        grid-row: 3;
+        grid-column: 1; 
+    }
+    #trouperImg { 
+        grid-row: 3;
+        grid-column: 2; 
+    }
+    #usImg { 
+        grid-row: 4;
+        grid-column: 1; 
+    }
+    #winnerImg { 
+        grid-row: 4;
+        grid-column: 2; 
+    }
+
+    #abbaAndante {
+        grid-row: 1;
+        grid-column: 1; 
+    }
+    #abbaEyes {
+        grid-row: 1;
+        grid-column: 2; 
+    }
+    #abbaLay {
+        grid-row: 2;
+        grid-column: 2; 
+    }
+    #abbaSOS {
+        grid-row: 3;
+        grid-column: 1; 
+    }
+    #abbaTrouper {
+        grid-row: 3;
+        grid-column: 2; 
+    }
+    #abbaUs {
+        grid-row: 4;
+        grid-column: 1; 
+    }
+    #abbaWinner {
+        grid-row: 4;
+        grid-column: 2; 
+    }
+
+    #andanteText, #eyesText, #layText, #SOSText, #trouperText, #usText, #winnerText {
+        overflow-y: scroll;
+    }
+    #andanteText { 
+        grid-row: 1;
+        grid-column: 1; 
+    }
+    #eyesText { 
+        grid-row: 1;
+        grid-column: 2; 
+    }
+    #layText { 
+        grid-row: 2;
+        grid-column: 2; 
+    }
+    #SOSText { 
+        grid-row: 3;
+        grid-column: 1; 
+    }
+    #trouperText { 
+        grid-row: 3;
+        grid-column: 2; 
+    }
+    #usText { 
+        grid-row: 4;
+        grid-column: 1; 
+    }
+    #winnerText { 
+        grid-row: 4;
+        grid-column: 2; 
+    }
+}
+@media only screen and (max-width: 780px) {
+
+    body{
+        grid-template-rows: repeat(4, 45vw);
+        grid-template-columns: 45vw 45vw;
+    }
+    #andanteText, #eyesText, #layText, #SOSText, #trouperText, #usText, #winnerText {
+        font-size: 1rem;
+    }
+    .introduction{
+        font-size: .8rem;
+    }
+}

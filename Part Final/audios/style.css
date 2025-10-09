@@ -1,0 +1,54 @@
+body{
+    background-color: black;
+    color: cyan;
+}
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0rem 20vw 0rem 20vw;
+}
+.song {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    text-align: center;
+    color: cyan;
+}
+
+.artist {
+    font-size: 1rem;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    color:deeppink;
+}
+
+audio {
+    width: 100%;
+    outline: none;
+}
+
+#verticalLeft {
+    position: fixed;
+    top: 54%;
+    writing-mode: vertical-rl;
+    font-size: 4rem;
+    left: 1rem;
+
+}
+#verticalRight {
+    position: fixed;
+    top: 4%;
+    writing-mode: vertical-lr;
+    font-size: 4rem;
+    right: 1rem;
+
+}
