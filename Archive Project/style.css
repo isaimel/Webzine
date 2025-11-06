@@ -1,0 +1,115 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow-x: hidden;
+    background-color:rgb(66, 60, 62);
+}
+
+#startupOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: pointer;
+}
+
+#startupText {
+    color: white;
+    text-align: center;
+    font-family: sans-serif;
+    max-width: 80%;
+}
+
+#menuContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 12.5rem;
+    height: 100vh;
+    background: rgb(34, 34, 34);
+    color: rgb(255, 255, 255);
+    padding: 1.25rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+#menuContainer input, #menuContainer button {
+    padding: 0.625rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 0.1875rem;
+}
+
+#menuContainer input {
+    outline: none;
+    cursor: text;
+}
+
+.sectionContainer {
+    margin-left: 13.75rem;
+    text-align: center;
+}
+
+#arenaContent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.625rem;
+    transition: all 0.5s ease;
+    position: relative;
+}
+
+#arenaContent img {
+    border-radius: 0.125rem;
+    cursor: pointer;
+    width: auto;
+    height: 14rem;
+    user-select: none;
+    -webkit-user-drag: none;
+    transition: all 0.5s ease, box-shadow 0.3s ease;
+}
+
+#arenaContent img.scattered {
+    height: 6rem;
+    position: absolute;
+    z-index: initial;
+    box-shadow: none;
+}
+
+#arenaContent img.highlight {
+    box-shadow: 0 0 15px 5px rgb(255, 255, 0);
+}
+
+#lightboxContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+#lightboxContainer img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 0.05rem;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    border-radius: .2rem;
+}
