@@ -85,8 +85,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else {
                     altText = 'untitled';
                 }
-
-                html += '<img src="' + imageUrl + '" alt="' + altText + '" draggable="false" loading="lazy" style="user-select:none;-webkit-user-drag:none;">';
+                if (Math.random() < .5){
+                    html += '<img src="' + imageUrl + '" loading="lazy">';
+                }
+                else{
+                    html = '<img src="' + imageUrl + '" loading="lazy">' + html;
+                }
             }
 
             arenaContent.innerHTML = html;
@@ -99,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             }
         })
-        .catch(function(err) {});
+        .catch(function() {});
 
     lightboxContainer.addEventListener('click', function(e) {
         if (e.target == lightboxContainer) {
