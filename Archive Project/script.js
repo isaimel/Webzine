@@ -5,134 +5,98 @@ document.addEventListener("DOMContentLoaded", function() {
     const toggleLayoutBtn = document.getElementById('toggleLayoutBtn');
     const zoomInBtn = document.getElementById('zoomInBtn');
     const zoomOutBtn = document.getElementById('zoomOutBtn');
+    const overlay = document.getElementById("startupOverlay");
     const classInput = document.getElementById('classInput');
     const searchBtn = document.getElementById('searchBtn');
 
     let scattered = false;
     let scale = 1;
-    let mapOffset = { x: 0, y: 0 };
-    let dragStart = { x: 0, y: 0 };
+    let offset = { x: 0, y: 0 };
     let dragging = false;
+    let lastMouse = { x: 0, y: 0 };
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
-    function setScale(newScale, resetPosition) {
-        const menuWidthRem = 12.5;
-        const menuWidthPx = menuWidthRem * rem;
-
-        const mapWidthPx = window.innerWidth - menuWidthPx;
-        const mapHeightPx = window.innerHeight;
-
-        const viewportCenterX = menuWidthPx + mapWidthPx / 2;
-        const viewportCenterY = mapHeightPx / 2;
-
-        const arenaRect = arenaContent.getBoundingClientRect();
-
-        const centerXInArena = (viewportCenterX - arenaRect.left) / scale;
-        const centerYInArena = (viewportCenterY - arenaRect.top) / scale;
-
-        if (resetPosition === true) {
-            mapOffset = { x: 0, y: 0 };
-        } else {
-            mapOffset.x -= (centerXInArena * (newScale - scale));
-            mapOffset.y -= (centerYInArena * (newScale - scale));
-        }
-
-        scale = newScale;
-
-        arenaContent.style.transformOrigin = "top left";
-        arenaContent.style.transform = `translate(${mapOffset.x / rem}rem, ${mapOffset.y / rem}rem) scale(${scale})`;
-    }
-
-
-    function openLightbox(img) {
-        lightboxContainer.style.display = 'flex';
-        lightboxImg.src = img.src;
-    }
-
-    function closeLightbox() {
-        lightboxContainer.style.display = 'none';
-        lightboxImg.src = '';
-    }
-
     fetch('https://api.are.na/v2/channels/superhero-junk?per=100&t=' + Date.now())
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-            let html = '';
-            for (let i = 0; i < data.contents.length; i = i + 1) {
-                let block = data.contents[i];
-                let imageUrl = null;
+        .then(r => r.json())
+        .then(data => {
+            arenaContent.innerHTML = '';
 
-                if (block.image && block.image.display && block.image.display.url) {
-                    imageUrl = block.image.display.url;
-                } else if (block.image && block.image.large && block.image.large.url) {
-                    imageUrl = block.image.large.url;
-                } else if (block.image && block.image.original && block.image.original.url) {
-                    imageUrl = block.image.original.url;
-                } else if (block.attachment && block.attachment.url) {
-                    imageUrl = block.attachment.url;
-                } else if (block.source && block.source.url && block.source.url.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-                    imageUrl = block.source.url;
+            data.contents.forEach(block => {
+                let imageUrl = block.image?.display?.url || block.image?.large?.url || block.image?.original?.url || block.attachment?.url || (block.source?.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i) && block.source.url);
+                if (!imageUrl){
+                    return;
                 }
 
-                if (imageUrl == null) {
-                    console.log('Skipped block (not an image):', block);
-                    continue;
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.loading = 'lazy';
+                img.style.height = '14rem';
+
+                var blockDescription = block.description || '';
+                var words = blockDescription.split(/\s+/);
+                for (var j = 0; j < words.length; j++) {
+                    var newClass = words[j];
+                    if (newClass) {
+                        img.classList.add(newClass);
+                    }
                 }
 
-                let altText = '';
-                if (block.title && block.title.trim() !== '') {
-                    altText = block.title;
-                } else {
-                    altText = 'untitled';
-                }
-                if (Math.random() < .5){
-                    html += '<img src="' + imageUrl + '" loading="lazy">';
+                img.addEventListener('click', () => {
+                    lightboxContainer.style.display = 'flex';
+                    lightboxImg.src = img.src;
+                });
+
+                if (Math.random() < 0.5){
+                    arenaContent.appendChild(img);
                 }
                 else{
-                    html = '<img src="' + imageUrl + '" loading="lazy">' + html;
+                    arenaContent.insertBefore(img, arenaContent.firstChild);
                 }
-            }
-
-            arenaContent.innerHTML = html;
-
-            const imgs = arenaContent.querySelectorAll('img');
-            for (let i = 0; i < imgs.length; i = i + 1) {
-                imgs[i].style.height = '14rem';
-                imgs[i].addEventListener('click', function() {
-                    openLightbox(imgs[i]);
-                });
-            }
+            });
         })
-        .catch(function() {});
+        .catch(() => {});
+        // Getting the images from Are.na was taken from class drive and stamped out with ChatGPT
 
-    lightboxContainer.addEventListener('click', function(e) {
-        if (e.target == lightboxContainer) {
-            closeLightbox();
+    searchBtn.addEventListener('click', () => {
+        const imgs = document.querySelectorAll('#arenaContent img');
+        let matched = false;
+        imgs.forEach(img => {
+            if (img.classList.contains(classInput.value.toLowerCase().replace(/\s+/g,'_'))) {
+                img.style.display = '';
+                matched = true;
+            } else {
+                img.style.display = 'none';
+            }
+        });
+        if (!matched){
+            imgs.forEach(img => img.style.display = '');
         }
     });
 
-    toggleLayoutBtn.addEventListener('click', function() {
+    lightboxContainer.addEventListener('click', () => {
+        lightboxContainer.style.display = 'none';
+        lightboxImg.src = '';
+    });
+
+    toggleLayoutBtn.addEventListener('click', () => {
         scattered = !scattered;
         const imgs = arenaContent.querySelectorAll('img');
-
-        if (scattered == true) {
+        if (scattered) {
             arenaContent.style.display = 'block';
             arenaContent.style.width = 'calc(100vw - 12.5rem)';
             arenaContent.style.height = '100vh';
             arenaContent.style.position = 'relative';
             scale = 1;
-            mapOffset = { x: 0, y: 0 };
-            arenaContent.style.transform = "translate(0rem, 0rem) scale(" + scale + ")";
-
+            offset = { x: 0, y: 0 };
+            arenaContent.style.transform = `translate(0rem, 0rem) scale(${scale})`;
             const containerWidthRem = arenaContent.offsetWidth / rem;
             const containerHeightRem = arenaContent.offsetHeight / rem;
-
-            for (let i = 0; i < imgs.length; i = i + 1) {
-                imgs[i].classList.add('scattered');
-                imgs[i].style.height = '4rem';
-                imgs[i].style.left = (Math.random() * (containerWidthRem - 4)) + 'rem';
-                imgs[i].style.top = (Math.random() * (containerHeightRem - 4)) + 'rem';
-            }
+            imgs.forEach(img => {
+                img.classList.add('scattered');
+                img.style.height = '4rem';
+                img.style.left = (Math.random() * (containerWidthRem - 4)) + 'rem';
+                img.style.top = (Math.random() * (containerHeightRem - 4)) + 'rem';
+            });
             arenaContent.style.cursor = 'grab';
         } else {
             arenaContent.style.display = 'flex';
@@ -140,62 +104,59 @@ document.addEventListener("DOMContentLoaded", function() {
             arenaContent.style.height = '';
             arenaContent.style.position = 'relative';
             scale = 1;
-            mapOffset = { x: 0, y: 0 };
-            arenaContent.style.transform = "translate(0rem, 0rem) scale(" + scale + ")";
-
-            for (let i = 0; i < imgs.length; i = i + 1) {
-                imgs[i].classList.remove('scattered');
-                imgs[i].style.height = '14rem';
-                imgs[i].style.left = '';
-                imgs[i].style.top = '';
-            }
+            offset = { x: 0, y: 0 };
+            arenaContent.style.transform = `translate(0rem, 0rem) scale(${scale})`;
+            imgs.forEach(img => {
+                img.classList.remove('scattered');
+                img.style.height = '14rem';
+                img.style.left = '';
+                img.style.top = '';
+            });
         }
     });
 
-
-    arenaContent.addEventListener('mousedown', function(event) {
-        if (scattered == false) {
-            return;
+    arenaContent.addEventListener('mousedown', event => {
+        if (scattered){
+            dragging = true;
+            lastMouse.x = event.clientX;
+            lastMouse.y = event.clientY;
+            arenaContent.style.cursor = 'grabbing';
         }
-        dragging = true;
-        dragStart.x = event.clientX - mapOffset.x;
-        dragStart.y = event.clientY - mapOffset.y;
-        arenaContent.style.cursor = 'grabbing';
     });
 
-    document.addEventListener('mousemove', function(event) {
-        if (dragging == false) {
-            return;
+    document.addEventListener('mousemove', event => {
+        if (dragging){
+            offset.x += event.clientX - lastMouse.x;
+            offset.y += event.clientY - lastMouse.y;
+            lastMouse.x = event.clientX;
+            lastMouse.y = event.clientY;
+            arenaContent.style.transform = `translate(${offset.x / rem}rem, ${offset.y / rem}rem) scale(${scale})`;
         }
-        mapOffset.x = event.clientX - dragStart.x;
-        mapOffset.y = event.clientY - dragStart.y;
-        arenaContent.style.transform = "translate(" + (mapOffset.x / rem) + "rem, " + (mapOffset.y / rem) + "rem) scale(" + scale + ")";
     });
 
-    document.addEventListener('mouseup', function() {
+    document.addEventListener('mouseup', () => {
         dragging = false;
-        if (scattered == true) {
+        if (scattered){
             arenaContent.style.cursor = 'grab';
         }
     });
 
-    zoomInBtn.addEventListener('click', function() {
-        if (scattered == false) {
-            return;
+    zoomInBtn.addEventListener('click', () => { 
+        if (scattered){
+            scale *= 1.5;
+            arenaContent.style.transform = `translate(${offset.x / rem}rem, ${offset.y / rem}rem) scale(${scale})`;
         }
-        setScale(scale * 1.5);
     });
 
-    zoomOutBtn.addEventListener('click', function() {
-        if (scattered == false) {
-            return;
+    zoomOutBtn.addEventListener('click', () => { 
+        if (scattered){
+            scale = 1;
+            offset = { x: 0, y: 0 };
+            arenaContent.style.transform = `translate(0rem, 0rem) scale(1)`;
         }
-        setScale(1, true);
     });
-
-    const overlay = document.getElementById("startupOverlay");
 
     overlay.addEventListener("click", () => {
-        overlay.style.display = "none";
+        overlay.style.display = "none"; 
     });
 });
