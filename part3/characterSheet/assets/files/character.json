@@ -5,9 +5,10 @@
       { "name": "" }
     ],
     "classes": [
-      { "name": "", "lvl": 0 }
+      { "name": "", "subclass": "", "lvl": 0 }
     ],
     "background": "",
+    "playName": "",
     "alignment": "",
     "experiencePoints": 0
   },

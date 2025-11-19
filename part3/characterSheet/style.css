@@ -1,74 +1,73 @@
-body{
-    display: grid;
-    grid-template-rows: 10rem 40rem 20rem 40rem;
-    grid-template-columns: 80vw;
-    justify-content: center;
-    margin: 0;
-    padding: 1rem;
-}
-#topMenu{
-    position:sticky;
-    top: 1rem;
-}
-#allDice{
-    display: none;
-    overflow-x: scroll;
-    justify-content:space-between;
-    width:100%;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(100, 100, 100, 0.5) transparent
-}
-#allDice div{
-    flex-shrink: 0;
-    width: 8rem;
-    height: 12rem;
-    text-align: center;
-}
-#allDice img{
-    max-width: 100%;
-    max-height: auto;
-    opacity: .4;
-}
-
-#buttonSeries{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-}
-
-#toDice {
-    border: .2rem solid cornflowerblue;
-    border-radius: .2rem;
-    background-color:cornflowerblue;
-    color: ivory;
-    max-width: fit-content;
+#characterSheet {
+    width: 60rem;
+    margin: 0 auto;
     padding: .4rem;
+    box-sizing: border-box;
+    border: 0.12rem solid black;
+    border-radius: 0.62rem;
+    background: whitesmoke;
 }
 
-#toDice:hover {
-    border-color:rgb(120, 165, 248);
-    background-color:rgb(120, 165, 248);
+#basicInfo {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr; 
+    grid-template-rows: auto auto;
+    gap: .4rem;
 }
 
-#toDice:active {
-    border-color:rgb(78, 122, 204);
-    background-color:rgb(78, 122, 204);
+#biCharName {
+    grid-column: 1 / 2;  
+    grid-row: 1 / 3;     
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-@keyframes slideDown {
-  from { transform: translateY(-12rem)}
-  to   { transform: translateY(0)}
+#biClsLvl {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
 }
 
-.diceMenuOpen {
-  animation: slideDown .6s ease-out;
+#biBckg {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
 }
 
-@keyframes slideUp {
-  from { transform: translateY(0rem)}
-  to   { transform: translateY(-12)}
+#biPlayName {
+    grid-column: 4 / 5;
+    grid-row: 1 / 2;
 }
 
-.diceMenuClose {
-  animation: slideUp .4s ease-in;
+#biRace {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+#biAlign {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+}
+
+#biExp {
+    grid-column: 4 / 5;
+    grid-row: 2 / 3;
+}
+
+#basicInfo div {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+#basicInfo div span {
+    font-size: 1.12rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+#basicInfo div hr {
+    border: none;
+    border-top: 0.06rem solid black;
+    margin: 0.25rem 0;
+    width: 100%;
 }
