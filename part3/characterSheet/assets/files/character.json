@@ -1,0 +1,106 @@
+{
+  "basicInfo": {
+    "characterName": "",
+    "races": [],
+    "classes": [],
+    "levels": [],
+    "background": "",
+    "alignment": "",
+    "experiencePoints": 0
+  },
+  "attributes": {
+    "strScore": 0,
+    "strMod": 0,
+    "dexScore": 0,
+    "dexMod": 0,
+    "conScore": 0,
+    "conMod": 0,
+    "intScore": 0,
+    "intMod": 0,
+    "wisScore": 0,
+    "wisMod": 0,
+    "chaScore": 0,
+    "chaMod": 0
+  },
+  "abilityScores": {
+    "strength": 10,
+    "dexterity": 10,
+    "constitution": 10,
+    "intelligence": 10,
+    "wisdom": 10,
+    "charisma": 10,
+    "savingThrows": []  // list of strings, e.g., ["strength", "dexterity"]
+  },
+  "skills": [], // list of strings, e.g., ["acrobatics", "perception"]
+  "combat": {
+    "armorClass": 10,
+    "initiative": 0,
+    "speed": 30,
+    "hitPoints": {
+      "current": 0,
+      "max": 0,
+      "temporary": 0
+    },
+    "hitDice": {
+      "type": "d8",
+      "total": 0,
+      "remaining": 0
+    }
+  },
+  "proficiencies": {
+    "armor": [],       // list of strings
+    "weapons": [],     // list of strings
+    "tools": [],       // list of strings
+    "languages": []    // list of strings
+  },
+  "equipment": [
+    {
+      "name": "",
+      "quantity": 1,
+      "description": ""
+    }
+  ],
+  "spells": [
+    {
+      "spellcastingClass": "",
+      "spellSaveDC": 0,
+      "spellAttackBonus": 0,
+      "spellSlots": {
+        "level1": 0,
+        "level2": 0,
+        "level3": 0,
+        "level4": 0,
+        "level5": 0,
+        "level6": 0,
+        "level7": 0,
+        "level8": 0,
+        "level9": 0
+      },
+      "knownSpells": [
+        {
+          "name": "",
+          "level": 0,
+          "school": "",
+          "castingTime": "",
+          "range": "",
+          "components": [],   // list of strings, e.g., ["V", "S", "M"]
+          "duration": "",
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "featuresAndTraits": [
+    {
+      "name": "",
+      "description": ""
+    }
+  ],
+  "personality": {
+    "personalityTraits": [], // list of strings
+    "ideals": [],            // list of strings
+    "bonds": [],             // list of strings
+    "flaws": []              // list of strings
+  },
+  "notes": []
+}

@@ -15,12 +15,19 @@ body{
     overflow-x: scroll;
     justify-content:space-between;
     width:100%;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 100, 100, 0.5) transparent
 }
 #allDice div{
     flex-shrink: 0;
     width: 8rem;
-    height: 10rem;
+    height: 12rem;
     text-align: center;
+}
+#allDice img{
+    max-width: 100%;
+    max-height: auto;
+    opacity: .4;
 }
 
 #buttonSeries{
@@ -46,4 +53,22 @@ body{
 #toDice:active {
     border-color:rgb(78, 122, 204);
     background-color:rgb(78, 122, 204);
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-12rem)}
+  to   { transform: translateY(0)}
+}
+
+.diceMenuOpen {
+  animation: slideDown .6s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(0rem)}
+  to   { transform: translateY(-12)}
+}
+
+.diceMenuClose {
+  animation: slideUp .4s ease-in;
 }
