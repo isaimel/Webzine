@@ -1,0 +1,74 @@
+body{
+    display: grid;
+    grid-template-rows: 10rem 40rem 20rem 40rem;
+    grid-template-columns: 80vw;
+    justify-content: center;
+    margin: 0;
+    padding: 1rem;
+}
+#topMenu{
+    position:sticky;
+    top: 1rem;
+}
+#allDice{
+    display: none;
+    overflow-x: scroll;
+    justify-content:space-between;
+    width:100%;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 100, 100, 0.5) transparent
+}
+#allDice div{
+    flex-shrink: 0;
+    width: 8rem;
+    height: 12rem;
+    text-align: center;
+}
+#allDice img{
+    max-width: 100%;
+    max-height: auto;
+    opacity: .4;
+}
+
+#buttonSeries{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+#toDice {
+    border: .2rem solid cornflowerblue;
+    border-radius: .2rem;
+    background-color:cornflowerblue;
+    color: ivory;
+    max-width: fit-content;
+    padding: .4rem;
+}
+
+#toDice:hover {
+    border-color:rgb(120, 165, 248);
+    background-color:rgb(120, 165, 248);
+}
+
+#toDice:active {
+    border-color:rgb(78, 122, 204);
+    background-color:rgb(78, 122, 204);
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-12rem)}
+  to   { transform: translateY(0)}
+}
+
+.diceMenuOpen {
+  animation: slideDown .6s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(0rem)}
+  to   { transform: translateY(-12)}
+}
+
+.diceMenuClose {
+  animation: slideUp .4s ease-in;
+}
