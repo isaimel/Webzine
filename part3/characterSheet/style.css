@@ -10,9 +10,8 @@
 
 #basicInfo {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1fr; 
+    grid-template-columns: .8fr 1fr 1fr 1fr; 
     grid-template-rows: auto auto;
-    gap: .4rem;
 }
 
 #biCharName {
@@ -57,12 +56,15 @@
     display: flex;
     flex-direction: column;
     padding: 0;
+    margin: .5rem;
 }
 
-#basicInfo div span {
+#basicInfo div div {
     font-size: 1.12rem;
     font-weight: bold;
-    margin-bottom: 0.25rem;
+    margin: 0;
+    width: 100%;
+
 }
 
 #basicInfo div hr {
@@ -70,4 +72,45 @@
     border-top: 0.06rem solid black;
     margin: 0.25rem 0;
     width: 100%;
+}
+
+#biClsLvl {
+    position: relative;
+}
+
+#biClsLvl .dropdownList {
+    display: none;
+    position: absolute;
+    top: 1.4rem;
+    left: 0;
+    z-index: 9999;
+    background-color: whitesmoke;
+}
+
+#biClsLvl:hover .dropdownList {
+    border-style: solid;
+    border-color: grey;   
+    border-width: 0rem .12rem .12rem .12rem;
+    display: block;
+}
+
+#biRace {
+    position: relative;
+}
+
+#biRace .dropdownList {
+    display: none;
+    position: absolute;
+    top: 1.4rem;
+    left: 0;
+    z-index: 9999;
+    background-color: whitesmoke;
+}
+
+#biRace:hover .dropdownList {
+    border-style: solid;
+    border-color: grey;   
+    border-width: 0rem .12rem .12rem .12rem;
+    display: block;
+
 }

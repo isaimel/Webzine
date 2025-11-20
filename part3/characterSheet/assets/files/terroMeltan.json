@@ -5,10 +5,12 @@
       { "name": "Human" }
     ],
     "classes": [
-      { "name": "Sorcerer", "subclass": "Wild Magic", "lvl": 5 }
+      { "name": "Sorcerer", "subclass": "Wild Magic", "lvl": 5},
+      { "name": "Sorcerer", "subclass": "Wild Magic", "lvl": 5}
     ],
     "background": "Sailor",
     "alignment": "Lawful Neutral",
+    "playName": "",
     "experiencePoints": 0
   },
   "attributes": {
