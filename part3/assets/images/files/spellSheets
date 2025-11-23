@@ -1,0 +1,168 @@
+{
+    "spellcasting": {
+        "dc": 0,
+        "atk": 0
+    },
+    "metaMagic":{
+        "spells": [
+            {
+            "name": "",
+            "description": "",
+            "cost": 0
+            }
+        ],        
+        "spellSlots": 0
+    },
+    "spells": {
+        "level_0": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_1": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_2": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_3": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_4": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_5": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_6": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_7": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_8": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        },
+        "level_9": {
+        "spells": [
+            {
+            "name": "",
+            "school": "",
+            "castingTime": "",
+            "range": "",
+            "target": "",
+            "components": [],
+            "duration": "",
+            "description": ""
+            }
+        ],
+        "spellSlots": 0
+        }
+    }
+}

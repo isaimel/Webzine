@@ -6,53 +6,131 @@
     <title>My Titles</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="header">
+        The DND Journey
+    </div>
     <div id="diceDropdown">
-        <div id="topMenu">
-            <div id="allDice">
-                <div id="d20">
-                    d20
-                    <img src="assets/images/d20.png" alt="A d20 die">
-                    <span></span>
-                </div>
-                <div id="d12">
-                    d12
-                    <img src="assets/images/d12.png" alt="A d12 die">
-                    <span></span>    
-                </div>
-                <div id="d00">
-                    d00
-                    <img src="assets/images/d00.png" alt="A d00 die">
-                    <span></span>    
-                </div>
-                <div id="d10">
-                    d10
-                    <img src="assets/images/d10.png" alt="A d10 die">
-                    <span></span>    
-                </div>
-                <div id="d08">
-                    d08
-                    <img src="assets/images/d08.png" alt="A d08 die">
-                    <span></span>    
-                </div>
-                <div id="d06">
-                    d06
-                    <img src="assets/images/d06.png" alt="A d06 die">
-                    <span></span>    
-                </div>
-                <div id="d04">
-                    d04
-                    <img src="assets/images/d04.png" alt="A d04 die">
-                    <span></span>    
-                </div>
+        <div id="allDice">
+            <div id="d20">
+                <!-- d20 -->
+                <img src="assets/images/d20.png" alt="A d20 die">
+                <span></span>
             </div>
-            <div id="buttonSeries">
-                <button type="button" id="toDice">
-                    Roll Me Some Dice!
+            <div id="d12">
+                <!-- d12 -->
+                <img src="assets/images/d12.png" alt="A d12 die">
+                <span></span>    
+            </div>
+            <div id="d00">
+                <!-- d00 -->
+                <img src="assets/images/d00.png" alt="A d00 die">
+                <span></span>    
+            </div>
+            <div id="d10">
+                <!-- d10 -->
+                <img src="assets/images/d10.png" alt="A d10 die">
+                <span></span>    
+            </div>
+            <div id="d08">
+                <!-- d08 -->
+                <img src="assets/images/d08.png" alt="A d08 die">
+                <span></span>    
+            </div>
+            <div id="d06">
+                <!-- d06 -->
+                <img src="assets/images/d06.png" alt="A d06 die">
+                <span></span>    
+            </div>
+            <div id="d04">
+                <!-- d04 -->
+                <img src="assets/images/d04.png" alt="A d04 die">
+                <span></span>    
+            </div>
+        </div>
+        <div id = "dicesAndScore">
+            <div id = "severalDiceRoller">
+            </div>
+            <div id = "diceScore">
+            </div>
+        </div>
+        
+        <div id="buttonSeries">
+            <div id="tabButtons">
+                <button type="button" id="openCombatButton" class="blueButton">
+                        Enter Combat!
+                </button>
+                <button type="button" id="clearDiceArray" class="blueButton">
+                        Clear Dice Array!
+                </button>
+                <button type="button" id="rollDiceArray" class="blueButton">
+                        Roll All Dice!
+                </button>
+            </div>
+            <div id="diceButtons">
+                <button type="button" id="resetDiceButton" class="blueButton">
+                    Reset!
+                </button>
+                <button type="button" id="diceButton" class="blueButton">
+                    Roll!
                 </button>
             </div>
         </div>
+    </div>
+    <div id="spellTemplate">
+        <div class="spellName">
+            <div>‎</div>
+            <hr>
+            Name
+        </div>
+        <div class= "spellSchool">
+            <div>‎ </div>
+            <hr>
+            School
+        </div>
+        <div class = "spellCastingTime">
+            <div>‎ </div>
+            <hr>
+            Casting Time
+        </div>
+        <div class = "spellRange">
+            <div>‎ </div>
+            <hr>
+            Range
+        </div>
+        <div class = "spellTarget">
+            <div>‎ </div>
+            <hr>
+            Target(s)
+        </div>
+        <div class = "spellComponents">
+            <div>‎ </div>
+            <hr>
+            Range
+        </div>
+        <div class = "spellDuration">
+            <div>‎ </div>
+            <hr>
+            Duration
+        </div>
+        <div class = "spellDescription">
+            <div>‎ </div>
+            <hr>
+            Description
+        </div>
+        <div class = "spellAtHigherLvl">
+            <div>‎ </div>
+            <hr>
+            At Higher Levels
+        </div>
+    </div>
+
+
+    <div id = "spellContainer">
+
     </div>
 </body>
 </html>
