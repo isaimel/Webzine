@@ -1,3 +1,31 @@
+#spellsPage{
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+#spellsContainer{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+}
+.singleLevelSpells{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.levelName{
+    font-size: 2rem;
+}
 #spellStyleTemplate{
     display: none;
+}
+
+.spellLevelHeader{
+    font-size: 2rem;
+}
+.spellsText{
+    font-size: 4rem;
 }

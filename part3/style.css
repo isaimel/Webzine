@@ -1,2 +1,22 @@
 @import url("diceStyle.css");
 @import url("spellStyle.css");
+@import url("slideMenuStyle.css");
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 0;
+    margin-bottom: 2rem;
+    box-sizing: border-box;
+    width: 40rem;
+    justify-self: center;
+    box-sizing: border-box;
+}
+hr {
+    border: none;
+    border-top: .1rem solid #ccc;
+    width: 100%;
+    margin: .5rem 0;
+}
+

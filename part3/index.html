@@ -18,12 +18,12 @@
             <div id="d20">
                 <!-- d20 -->
                 <img src="assets/images/d20.png" alt="A d20 die">
-                <span></span>
+                <span>&#9679;</span>
             </div>
             <div id="d12">
                 <!-- d12 -->
                 <img src="assets/images/d12.png" alt="A d12 die">
-                <span></span>    
+                <span>&#9679;</span>    
             </div>
             <div id="d00">
                 <!-- d00 -->
@@ -80,57 +80,34 @@
             </div>
         </div>
     </div>
-    <div id="spellTemplate">
-        <div class="spellName">
-            <div>‎</div>
-            <hr>
-            Name
+    <hr>
+    <div id="differentPages">
+        <div id = "sideBarComp">
+            <button id="menuToggleBtn" class="blueButton">☰</button>
+            <div id = "buttonSidebar" class="sidebar">
+                <button id = "showSpells" class="blueButton">Show Character</button>
+                <button class="blueButton">Enter Combat!</button>
+                <button class="blueButton">Show <br> Notes</button>
+            </div>
         </div>
-        <div class= "spellSchool">
-            <div>‎ </div>
-            <hr>
-            School
-        </div>
-        <div class = "spellCastingTime">
-            <div>‎ </div>
-            <hr>
-            Casting Time
-        </div>
-        <div class = "spellRange">
-            <div>‎ </div>
-            <hr>
-            Range
-        </div>
-        <div class = "spellTarget">
-            <div>‎ </div>
-            <hr>
-            Target(s)
-        </div>
-        <div class = "spellComponents">
-            <div>‎ </div>
-            <hr>
-            Range
-        </div>
-        <div class = "spellDuration">
-            <div>‎ </div>
-            <hr>
-            Duration
-        </div>
-        <div class = "spellDescription">
-            <div>‎ </div>
-            <hr>
-            Description
-        </div>
-        <div class = "spellAtHigherLvl">
-            <div>‎ </div>
-            <hr>
-            At Higher Levels
-        </div>
+        <div id="currentPage"></div>
     </div>
 
-
-    <div id = "spellContainer">
-
+    <div id="spellsPage">
+        <div class = "spellsText">Spells</div>
+        <div id = "spellsContainer">
+        </div>
+    </div>
+    <div id="spellTemplate">
+        <div class="spellName"><b>Name:</b> <span>&#9679;</span></div>
+        <div class="spellSchool"><b>School:</b> <span>&#9679;</span></div>
+        <div class="spellCastingTime"><b>Casting Time:</b> <span>&#9679;</span></div>
+        <div class="spellRange"><b>Range:</b> <span>&#9679;</span></div>
+        <div class="spellTarget"><b>Target(s):</b> <span>&#9679;</span></div>
+        <div class="spellComponents"><b>Components:</b> <span>&#9679;</span></div>
+        <div class="spellDuration"><b>Duration:</b> <span>&#9679;</span></div>
+        <div class="spellDescription"><b>Description:</b> <span>&#9679;</span></div>
+        <div class="spellAtHigherLvl"><b>At Higher Levels:</b> <span>&#9679;</span></div>
     </div>
 </body>
 </html>

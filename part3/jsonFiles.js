@@ -1,3 +1,5 @@
+export {spellData}
+
 export const spellData = {
     "spellcasting": {
         "dc": 16,
