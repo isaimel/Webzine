@@ -1,10 +1,11 @@
 #characterSheet {
-    width: 60rem;
-    margin: 0 auto;
+    display: none;
+    width: 100%;
+    margin: 0;
     padding: .4rem;
     box-sizing: border-box;
-    border: 0.12rem solid black;
-    border-radius: 0.62rem;
+    /* border-radius: .4rem; */
+    /* box-shadow: 0 0.2rem 0.8rem rgba(0,0,0,0.25); */
 }
 
 #basicInfo {
@@ -108,6 +109,7 @@
 
 #biRace:hover .dropdownList {
     border-style: solid;
+    border-color: grey;   
     border-width: 0rem .12rem .12rem .12rem;
     display: block;
 

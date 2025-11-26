@@ -15,9 +15,20 @@ document.addEventListener("DOMContentLoaded", function() {
     const template = document.getElementById("spellTemplate");
     const menuToggleBtn = document.getElementById("menuToggleBtn"); 
     const sidebar = document.getElementById("buttonSidebar");
-    const showSpellsButton = document.getElementById("showSpells");
+    const enterSpellsButton = document.getElementById("enterSpells");
+    const enterCombatButton = document.getElementById("enterCombat");
+    const showCharacterButton = document.getElementById("showCharacter");
     const currentPage = document.getElementById("currentPage");
+    const spellsPage = document.getElementById("spellsPage");
+    const characterPage = document.getElementById("characterSheet");
+    const combatPage = document.getElementById("combatPage");
+    const savingThrowButton = document.getElementById("savingThrow");
+    const inspirationButton = document.getElementById("inspiration");
+    const advantageButton = document.getElementById("advantage");
+    const enhanceButton = document.getElementById("enhanceAbility");
 
+    let addedModifier = 0;
+    let previouslySelectedModSkill = null;
     
     let combatActive = false;
     let dieActive = false;
@@ -39,6 +50,12 @@ document.addEventListener("DOMContentLoaded", function() {
         if (dieActive == false){
             combatState(false);
             combatActive = false;
+            if (previouslySelectedModSkill != null){
+                previouslySelectedModSkill.click();
+                openCombatButton.click();
+            }
+            dieActive = false;
+
         }
         diceState(dieActive);
     });
@@ -78,6 +95,12 @@ document.addEventListener("DOMContentLoaded", function() {
     clearDiceArray.addEventListener("click", function() {
         severalDiceRoller.replaceChildren();
         diceScore.innerHTML="";
+        if (inspirationThrow){
+            const clone = document.getElementById("d08").cloneNode(true);
+            clone.removeAttribute("id");
+            clone.diceValue = "d08";
+            severalDiceRoller.appendChild(clone);
+        }
     });
 
     resetDiceButton.addEventListener("click", function() {
@@ -111,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             else{
                 const clone = diceContainer.cloneNode(true);
+                clone.removeAttribute("id");
                 severalDiceRoller.appendChild(clone);
                 clone.diceValue = diceContainer.id;
                 clone.addEventListener("click", function () {
@@ -142,7 +166,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     severalDiceRoller.querySelectorAll("div").forEach(die => {
                         outputVal += Number(die.querySelector("span").textContent);
                     });
-                    diceScore.innerHTML = outputVal;
+                    console.log(outputVal);
+                    console.log(addedModifier);
+        
+                    diceScore.innerHTML = outputVal + addedModifier;
+                    console.log(addedModifier);
                     clearInterval(interval);
                 }
             }, 60);
@@ -197,12 +225,322 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("buttonSidebar").style.width = sideBarActive ? "6rem" : "";
         document.getElementById("buttonSidebar").style.height = sideBarActive ? "fit-content" : "";
         document.getElementById("menuToggleBtn").style.backgroundColor = sideBarActive ? "rgb(95, 134, 207)" : "";
+        if (!sideBarActive){
+            hidePages()
+            resetCombatAddons();
+            changeModifier(0);
+            previouslySelectedModSkill = null;
+
+        }
     });
 
-    showSpellsButton.addEventListener("click", function () {
-        currentPage.appendChild(document.getElementById("spellsPage"));
-        document.getElementById("spellsPage").style.display = "block"
+    enterSpellsButton.addEventListener("click", function () {
+        if (spellsPage.style.display != "flex"){
+            hidePages();
+            spellsPage.style.display = "flex"
+        }else{
+            spellsPage.style.display = "none"
+            hidePages();
+        }
     });
+
+    showCharacterButton.addEventListener("click", function () {
+        if (characterPage.style.display != "flex"){
+            hidePages();
+            characterPage.style.display = "flex"
+        }else{
+            characterPage.style.display = "none"
+            hidePages();
+        }
+    });
+
+    enterCombatButton.addEventListener("click", function () {
+        if (combatPage.style.display != "flex"){
+            hidePages();
+            combatPage.style.display = "flex"
+        }else{
+            combatPage.style.display = "none"
+            hidePages();
+        }
+    });
+
+    function hidePages(){
+        currentPage.querySelectorAll("div").forEach(page => {
+            page.style.display = "";
+        });
+    }
+
+    const data = characterData;
+    document.querySelector("#biCharName div").textContent = data.basicInfo.charName;
+    createDropdown("#biClsLvl", data.basicInfo.classes, formatClass)
+    document.querySelector("#biBckg div").textContent = data.basicInfo.background;
+    document.querySelector("#biPlayName div").textContent = data.basicInfo.playName;
+    createDropdown("#biRace", data.basicInfo.races, formatRace)
+    document.querySelector("#biAlign div").textContent = data.basicInfo.alignment;
+    document.querySelector("#biExp div").textContent = data.basicInfo.experiencePoints;
+    
+    function formatClass(c) {
+        const sub = c.subclass ? ` (${c.subclass})` : "";
+        return `${c.name}${sub} lvl. ${c.lvl}`;
+    }
+    function formatRace(c) {
+        const sub = c.subrace ? ` (${c.subrace})` : "";
+        return `${c.name}${sub}`;
+    }
+
+    function createDropdown(type, typeContent, format){
+        const main = document.querySelector(type + " .mainValue");
+        const list = document.querySelector(type + " .dropdownList");
+
+        if (typeContent.length > 0) {
+            main.innerHTML = format(typeContent[0]);
+        }
+
+        list.innerHTML = "";
+        typeContent.slice(1).forEach(c => {
+            const item = document.createElement("div");
+            item.innerHTML = format(c);
+            list.appendChild(item);
+        });
+    }
+
+    function changeModifier(modifier){
+        let scoreMod = document.getElementById("scoreModifier");
+        addedModifier = modifier;
+        console.log(addedModifier);
+        if (modifier == 0){
+            scoreMod.innerHTML = "";
+        }
+        else{
+            scoreMod.innerHTML = (modifier > 0) ? "+" + modifier : modifier;
+        }
+    }
+
+
+    function fillAbilityScores(overheadContainer){
+        const abilities = {
+            strength: "STR",
+            dexterity: "DEX",
+            constitution: "CON",
+            intelligence: "INT",
+            wisdom: "WIS",
+            charisma: "CHA"
+        };
+        for (const [key, label] of Object.entries(abilities)) { 
+            const abilityDiv = document.createElement("div");
+            const abilityLabelSpan = document.createElement("span");
+            const abilityScoreSpan = document.createElement("span");
+            const abilityModSpan = document.createElement("span");
+
+            abilityDiv.className = "abilityScore"
+            abilityDiv.ability = key;
+            abilityLabelSpan.className = "abilityLabel"
+            abilityScoreSpan.className = "abilityScore"
+            abilityModSpan.className = "abilityMod"
+
+            abilityLabelSpan.innerHTML = label
+            abilityScoreSpan.innerHTML = characterData["abilityScores"][key];
+            abilityModSpan.innerHTML = (characterData["modifiers"][key] > 0) ? "+" + characterData["modifiers"][key] : characterData["modifiers"][key];
+
+            abilityDiv.appendChild(abilityLabelSpan);
+            abilityDiv.appendChild(abilityModSpan);
+            abilityDiv.appendChild(abilityScoreSpan);
+
+            overheadContainer.appendChild(abilityDiv)
+            abilityDiv.addEventListener("click", function () {
+                if(!dieActive){
+                    diceButton.click();
+                }
+                if (!combatActive){
+                    openCombatButton.click();4
+                }
+                if (abilityDiv == previouslySelectedModSkill){
+                    changeModifier(0);
+                    abilityDiv.style.backgroundColor = "";
+                    previouslySelectedModSkill = null;
+                    return;
+                }
+                clearDiceArray.click();
+                changeModifier(Number(characterData["modifiers"][key]));
+                if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
+                previouslySelectedModSkill = abilityDiv;
+                previouslySelectedModSkill.style.backgroundColor = "gray";
+            });
+        }
+    }
+
+    function fillSkillsScores(overheadContainer){
+        const skills = {
+            "acrobatics": "ACR",
+            "animal handling": "ANH",
+            "arcana": "ARC",
+            "athletics": "ATH",
+            "deception": "DEC",
+            "history": "HIS",
+            "insight": "INS",
+            "intimidation": "INTM",
+            "investigation": "INV",
+            "medicine": "MED",
+            "nature": "NAT",
+            "perception": "PRC",
+            "performance": "PRF",
+            "persuasion": "PRS",
+            "religion": "REL",
+            "sleight of hand": "SLT",
+            "stealth": "STE",
+            "survival": "SUR"
+        }
+        for (const [key, label] of Object.entries(skills)) { 
+            const skillsDiv = document.createElement("div");
+            const skillsLabelSpan = document.createElement("span");
+            const skillsScoreSpan = document.createElement("span");
+
+            skillsDiv.className = "skillsScore"
+            skillsDiv.skills = key;
+            skillsLabelSpan.className = "skillsLabel"
+            skillsScoreSpan.className = "skillsScore"
+
+            skillsLabelSpan.innerHTML = label
+            skillsScoreSpan.innerHTML = "+" + characterData["skills"][key];
+
+            skillsDiv.appendChild(skillsLabelSpan);
+            skillsDiv.appendChild(skillsScoreSpan);
+
+            overheadContainer.appendChild(skillsDiv)
+            skillsDiv.addEventListener("click", function () {
+                if(!dieActive){
+                    diceButton.click();
+                }
+                if (!combatActive){
+                    openCombatButton.click();
+                }
+                if (skillsDiv == previouslySelectedModSkill){
+                    changeModifier(0);
+                    skillsDiv.style.backgroundColor = "";
+                    previouslySelectedModSkill = null;
+                    return;
+                }
+                clearDiceArray.click();
+                changeModifier(Number(characterData["skills"][key]));
+                if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
+                previouslySelectedModSkill = skillsDiv;
+                previouslySelectedModSkill.style.backgroundColor = "gray";
+            });
+        }
+    }
+
+    function fillModifiers(overheadContainer) {
+        const abilities = {
+            strength: "STR",
+            dexterity: "DEX",
+            constitution: "CON",
+            intelligence: "INT",
+            wisdom: "WIS",
+            charisma: "CHA"
+        };
+        for (const [key, label] of Object.entries(abilities)) { 
+            const abilityDiv = document.createElement("div");
+            const abilityLabelSpan = document.createElement("span");
+            const abilityScoreSpan = document.createElement("span");
+            const abilityModSpan = document.createElement("span");
+
+            abilityDiv.className = "abilityScore"
+            abilityDiv.ability = key;
+            abilityLabelSpan.className = "abilityLabel"
+            abilityScoreSpan.className = "abilityScore"
+            abilityModSpan.className = "abilityMod"
+
+            abilityLabelSpan.innerHTML = label
+            abilityScoreSpan.innerHTML = characterData["abilityScores"][key];
+            abilityModSpan.innerHTML = (characterData["savingThrows"][key] > 0) 
+                ? "+" + characterData["savingThrows"][key] 
+                : characterData["savingThrows"][key];
+
+            abilityDiv.appendChild(abilityLabelSpan);
+            abilityDiv.appendChild(abilityModSpan);
+            abilityDiv.appendChild(abilityScoreSpan);
+
+            overheadContainer.appendChild(abilityDiv)
+            abilityDiv.addEventListener("click", function () {
+                if(!dieActive){
+                    diceButton.click();
+                }
+                if (!combatActive){
+                    openCombatButton.click();
+                }
+                if (abilityDiv == previouslySelectedModSkill){
+                    changeModifier(0);
+                    abilityDiv.style.backgroundColor = "";
+                    previouslySelectedModSkill = null;
+                    return;
+                }
+                clearDiceArray.click();
+                addedModifier = changeModifier(Number(characterData["savingThrows"][key]));
+                if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
+                previouslySelectedModSkill = abilityDiv;
+                previouslySelectedModSkill.style.backgroundColor = "gray";
+
+            });
+        }
+    }
+
+
+    function resetCombatAddons(){
+        if (savingThrow) savingThrowButton.click();
+        if (inspirationThrow) inspirationButton.click();
+        if (advantageThrow) advantageButton.click();
+        if (enhanceAbilityThrow) enhanceButton.click();
+    }
+
+    let savingThrow = false;
+    savingThrowButton.addEventListener("click", function() {
+        savingThrow = !savingThrow;
+        savingThrowButton.style.backgroundColor = savingThrow ? "gray" : "";
+        document.getElementById("combatAbilityScores").style.display = savingThrow ? "none" : "inline-flex";
+        document.getElementById("combatModifierScores").style.display = savingThrow ? "inline-flex" : "none";
+        if (previouslySelectedModSkill != null){
+            changeModifier(0);
+            previouslySelectedModSkill.style.backgroundColor = "";
+            previouslySelectedModSkill = null;
+        }
+    });
+    let inspirationThrow = false;
+    inspirationButton.addEventListener("click", function() {
+        inspirationThrow = !inspirationThrow;
+        if (inspirationThrow){
+            if(!dieActive){
+                diceButton.click();
+            }
+            if (!combatActive){
+                openCombatButton.click();
+            }
+        }
+        inspirationButton.style.backgroundColor = inspirationThrow ? "gray" : "";
+
+        if (inspirationThrow){
+            const clone = document.getElementById("d08").cloneNode(true);
+            clone.removeAttribute("id");
+            clone.diceValue = "d08";
+            severalDiceRoller.appendChild(clone);
+        }else{
+            clearDiceArray.click();
+        }
+    });
+    let advantageThrow = false;
+    advantageButton.addEventListener("click", function() {
+        advantageThrow = !advantageThrow;
+        advantageButton.style.backgroundColor = advantageThrow ? "gray" : "";
+    });
+    let enhanceAbilityThrow = false;
+    enhanceButton.addEventListener("click", function() {
+        enhanceAbilityThrow = !enhanceAbilityThrow;
+        enhanceButton.style.backgroundColor = enhanceAbilityThrow ? "gray" : "";
+    });
+    fillAbilityScores(document.getElementById("combatAbilityScores"));
+    fillSkillsScores(document.getElementById("combatSkillsScores"));
+    fillModifiers(document.getElementById("combatModifierScores"));
+
+    
 });
 
 const spellData = {
@@ -434,4 +772,154 @@ const spellData = {
             "spellSlots": 3
         }
     }
+}
+const characterData = {
+    "basicInfo": {
+        "charName": "Terro Meltan",
+        "races": [
+            { "name": "Human", "subrace": "" }
+        ],
+        "classes": [
+            { "name": "Sorcerer", "subclass": "Wild Magic", "lvl": 5 }
+        ],
+        "background": "Sailor",
+        "alignment": "Lawful Neutral",
+        "playName": "Isai M.",
+        "experiencePoints": 0
+    },
+    "abilityScores": {
+        "strength": 7,
+        "dexterity": 12,
+        "constitution": 13,
+        "intelligence": 13,
+        "wisdom": 13,
+        "charisma": 4,
+    },
+    "modifiers": {
+        "strength": -2,
+        "dexterity": 1,
+        "constitution": 1,
+        "intelligence": 1,
+        "wisdom": 1,
+        "charisma": 4
+    },
+    "inspiration": 0,
+    "profBonus": 3,
+    "savingThrows": {
+        "strength": -1,
+        "dexterity": 2,
+        "constitution": 5,
+        "intelligence": 2,
+        "wisdom": 2,
+        "charisma": 8
+    },
+    "skills": {
+        "acrobatics": 1,
+        "animal handling": 1,
+        "arcana": 4,
+        "athletics": 1,
+        "deception": 4,
+        "history": 1,
+        "insight": 1,
+        "intimidation": 7,
+        "investigation": 1,
+        "medicine": 1,
+        "nature": 1,
+        "perception": 4,
+        "performance": 4,
+        "persuasion": 7,
+        "religion": 1,
+        "sleight of hand": 1,
+        "stealth": 1,
+        "survival": 1
+    },    
+    "passiveWisdom": 14,
+    "otherProficiencies": [],
+    "languages": [
+        { "name": "Common" }
+    ],
+    "combat": {
+        "armorClass": 11,
+        "initiative": 1,
+        "speed": 30,
+        "hitPoints": {
+            "current": 0,
+            "max": 0,
+            "temporary": 0
+        },
+        "hitDice": {
+            "type": "d06",
+            "total": 0,
+            "remaining": 0
+        },
+        "deathSaves": {
+            "success": 0,
+            "failure": 0
+        }
+    },
+    "equipment": [
+        {
+            "name": "Mana Marble",
+            "quantity": 2,
+            "description": "Replenishes all spell slots"
+        },
+        {
+            "name": "Disintegration Staff",
+            "quantity": 1,
+            "description": ""
+        },
+        {
+            "name": "Light-Up Short Boots (Sketchers)",
+            "quantity": 1,
+            "description": "Shoes that can light up, potentially prevents levitation"
+        }
+    ],
+    "personality": {
+        "traits": [
+            { "desc": "" }
+        ],
+        "ideals": [
+            { "desc": "" }
+        ],
+        "bonds": [
+            { "desc": "" }
+        ],
+        "flaws": [
+            { "desc": "" }
+        ]
+    },
+    "notes": [
+        { "text": "" }
+    ],
+    "feats": [
+        { "name": "Eldritch Adept" }
+    ],
+    "traits": [
+        { "name": "" }
+    ],
+    "attacks": [
+        {
+            "name": "",
+            "type": "",
+            "atkBonus": "",
+            "damage": {
+                "form": "",
+                "type": ""
+            },
+            "range": "",
+            "properties": ""
+        }
+    ],
+    "spells": [
+        {
+            "name": "",
+            "level": 0,
+            "damage": {
+                "form": "",
+                "type": ""
+            },
+            "range": "",
+            "scales": true
+        }
+    ]
 }

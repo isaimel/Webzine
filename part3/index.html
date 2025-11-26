@@ -14,46 +14,47 @@
         The DND Journey
     </div>
     <div id="diceDropdown">
-        <div id="allDice">
-            <div id="d20">
-                <!-- d20 -->
-                <img src="assets/images/d20.png" alt="A d20 die">
-                <span>&#9679;</span>
-            </div>
-            <div id="d12">
-                <!-- d12 -->
-                <img src="assets/images/d12.png" alt="A d12 die">
-                <span>&#9679;</span>    
-            </div>
-            <div id="d00">
-                <!-- d00 -->
-                <img src="assets/images/d00.png" alt="A d00 die">
-                <span></span>    
-            </div>
-            <div id="d10">
-                <!-- d10 -->
-                <img src="assets/images/d10.png" alt="A d10 die">
-                <span></span>    
-            </div>
-            <div id="d08">
-                <!-- d08 -->
-                <img src="assets/images/d08.png" alt="A d08 die">
-                <span></span>    
-            </div>
-            <div id="d06">
-                <!-- d06 -->
-                <img src="assets/images/d06.png" alt="A d06 die">
-                <span></span>    
-            </div>
-            <div id="d04">
-                <!-- d04 -->
-                <img src="assets/images/d04.png" alt="A d04 die">
-                <span></span>    
-            </div>
+            <div id="allDice">
+                <div id="d20">
+                    <!-- d20 -->
+                    <img src="assets/images/d20.png" alt="A d20 die">
+                    <span></span>
+                </div>
+                <div id="d12">
+                    <!-- d12 -->
+                    <img src="assets/images/d12.png" alt="A d12 die">
+                    <span></span>    
+                </div>
+                <div id="d00">
+                    <!-- d00 -->
+                    <img src="assets/images/d00.png" alt="A d00 die">
+                    <span></span>    
+                </div>
+                <div id="d10">
+                    <!-- d10 -->
+                    <img src="assets/images/d10.png" alt="A d10 die">
+                    <span></span>    
+                </div>
+                <div id="d08">
+                    <!-- d08 -->
+                    <img src="assets/images/d08.png" alt="A d08 die">
+                    <span></span>    
+                </div>
+                <div id="d06">
+                    <!-- d06 -->
+                    <img src="assets/images/d06.png" alt="A d06 die">
+                    <span></span>    
+                </div>
+                <div id="d04">
+                    <!-- d04 -->
+                    <img src="assets/images/d04.png" alt="A d04 die">
+                    <span></span>    
+                </div>
         </div>
         <div id = "dicesAndScore">
             <div id = "severalDiceRoller">
             </div>
+            <div id="scoreModifier"></div>
             <div id = "diceScore">
             </div>
         </div>
@@ -85,29 +86,88 @@
         <div id = "sideBarComp">
             <button id="menuToggleBtn" class="blueButton">☰</button>
             <div id = "buttonSidebar" class="sidebar">
-                <button id = "showSpells" class="blueButton">Show Character</button>
-                <button class="blueButton">Enter Combat!</button>
+                <button id = "enterCombat" class="blueButton">Enter Battle!</button>
+                <button id = "showCharacter" class="blueButton">Show Character</button>
+                <button id = "enterSpells" class="blueButton">Show Spells!</button>
                 <button class="blueButton">Show <br> Notes</button>
             </div>
         </div>
-        <div id="currentPage"></div>
-    </div>
+        <div id="currentPage">
+            <div id = "combatPage">
+                <div id="modificationButtons">
+                    <button id = "savingThrow" class="blueButton">Saving Throw?</button>
+                    <button id = "inspiration" class="blueButton">Bardic Inspiration?</button>
+                    <button id = "enhanceAbility" class="blueButton"> Enhance Ability?</button>
+                    <button id = "advantage" class="blueButton"> Advantage?</button>
+                </div>
+                <div id = "combatAbilityScores">
+                </div>
+                <div id = "combatModifierScores">
+                </div>
+                <div id = "combatSkillsScores">
+                </div>
 
-    <div id="spellsPage">
-        <div class = "spellsText">Spells</div>
-        <div id = "spellsContainer">
+            </div>
+            <div id="spellsPage">
+                <div class = "spellsText">Spells</div>
+                <div id = "spellsContainer">
+                </div>
+            </div>
+            <div id = "characterSheet">
+                <div id="basicInfo">
+                    <div id="biCharName">
+                        <div>‎</div>
+                        <hr>
+                        Character Name
+                    </div>
+                    <div id="biClsLvl" class="dropdown">
+                        <div class="mainValue"></div>
+                        <div class="dropdownList"></div>
+                        <hr>
+                        Class & Level
+                    </div>
+                    <div id= "biBckg">
+                        <div>‎ </div>
+                        <hr>
+                        Background
+                    </div>
+                    <div id = "biPlayName">
+                        <div>‎ </div>
+                        <hr>
+                        Player Name
+                    </div>
+                    <div id="biRace" class="dropdown">
+                        <div class="mainValue"></div>
+                        <div class="dropdownList"></div>
+                        <hr>
+                        Class & Level
+                    </div>
+                    <div id = "biAlign">
+                        <div>‎ </div>
+                        <hr>
+                        Alignment
+                    </div>
+                    <div id = "biExp">
+                        <div>‎ </div>
+                        <hr>
+                        Experience Points
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
     <div id="spellTemplate">
-        <div class="spellName"><b>Name:</b> <span>&#9679;</span></div>
-        <div class="spellSchool"><b>School:</b> <span>&#9679;</span></div>
-        <div class="spellCastingTime"><b>Casting Time:</b> <span>&#9679;</span></div>
-        <div class="spellRange"><b>Range:</b> <span>&#9679;</span></div>
-        <div class="spellTarget"><b>Target(s):</b> <span>&#9679;</span></div>
-        <div class="spellComponents"><b>Components:</b> <span>&#9679;</span></div>
-        <div class="spellDuration"><b>Duration:</b> <span>&#9679;</span></div>
-        <div class="spellDescription"><b>Description:</b> <span>&#9679;</span></div>
-        <div class="spellAtHigherLvl"><b>At Higher Levels:</b> <span>&#9679;</span></div>
+        <div class="spellName"><b>Name:</b> <span></span></div>
+        <div class="spellSchool"><b>School:</b> <span></span></div>
+        <div class="spellCastingTime"><b>Casting Time:</b> <span></span></div>
+        <div class="spellRange"><b>Range:</b> <span></span></div>
+        <div class="spellTarget"><b>Target(s):</b> <span></span></div>
+        <div class="spellComponents"><b>Components:</b> <span></span></div>
+        <div class="spellDuration"><b>Duration:</b> <span></span></div>
+        <div class="spellDescription"><b>Description:</b> <span></span></div>
+        <div class="spellAtHigherLvl"><b>At Higher Levels:</b> <span></span></div>
     </div>
 </body>
 </html>
