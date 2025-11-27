@@ -5,11 +5,8 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 2rem;
-    padding: 1rem;
     overflow-x: auto;
     box-sizing: border-box;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
 }
 
 #artPage img {
@@ -41,6 +38,4 @@
     max-width: 95%;
     max-height: 95%;
     object-fit: contain;
-    box-shadow: 0 0 1rem #000;
-    border-radius: 0.3rem;
 }

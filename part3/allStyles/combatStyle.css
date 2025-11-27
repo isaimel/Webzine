@@ -1,0 +1,151 @@
+#combatPage {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+#modificationButtons {
+    display: flex;
+    padding: 0.4rem;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    gap: 1rem;
+    overflow-x: auto;
+}
+
+#modificationButtons button {
+    width: 100%;
+}
+
+#combatAbilityScores, #combatModifierScores, #combatSkillsScores {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 1rem;
+    height: 8rem;
+    width: 100%;
+    min-width: 80%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    transition: 0.4s;
+}
+
+#combatModifierScores {
+    display: none;
+}
+
+#combatAbilityScores div, #combatModifierScores div, #combatSkillsScores div {
+    width: 3rem;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    transition: 0.4s;
+}
+
+#combatAbilityScores div:hover, #combatModifierScores div:hover, #combatSkillsScores div:hover {
+    transform: scale(1.1);
+}
+
+.abilityLabel, .abilityBase{
+    font-size: 1rem;
+}
+
+.abilityMod {
+    font-size: 2rem;
+}
+
+#combatSpellList {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: 0.4s;
+}
+
+.combatSpellLevel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 .4rem;
+    transition: 0.4s;
+    box-sizing: border-box;
+}
+
+.spellsContainer {
+    display: none;
+    flex-direction: column;
+    gap: .6rem;
+    box-sizing: border-box;
+}
+
+.combatSpellLevelTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: left;
+    transition: 0.4s;
+    font-family: "Pirata One";
+    font-size: xx-large;
+}
+
+.spellSlotTracker {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    width: fit-content;
+    font-size: 1.2rem;
+}
+.spellSlotTracker button{
+    border-width: .2rem .4rem;
+}
+
+.spellSlotTracker button {
+    cursor: pointer;
+}
+
+.combatSpellEntry {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.2rem 0.6rem rgba(0,0,0,0.25);
+    padding: 0.4rem 0.6rem;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.combatSpellEntry:hover {
+    transform: scale(1.01);
+}
+
+.combatSpellNameRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    width: 100%;
+    transition: 0.4s;
+}
+
+.combatSpellDetails {
+    display: none;
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    font-size: 0.95rem;
+    line-height: 1.2rem;
+    flex-direction: column;
+    gap: 0.2rem;
+    transition: 0.4s;
+}

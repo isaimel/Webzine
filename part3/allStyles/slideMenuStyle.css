@@ -38,8 +38,5 @@
 #currentPage{
     height: fit-content;
     width: 100%;
-    border-radius: .6rem;
-    box-shadow: 0 0.2rem 0.8rem rgba(0,0,0,0.25);
-
 }
 

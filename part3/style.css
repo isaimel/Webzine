@@ -1,26 +1,54 @@
-@import url("diceStyle.css");
-@import url("spellStyle.css");
-@import url("slideMenuStyle.css");
-@import url("characterStyle.css");
-@import url("combatStyle.css");
-@import url("notesStyle.css");
-@import url("artStyle.css");
+@import url("./allStyles/diceStyle.css");
+@import url("./allStyles/spellStyle.css");
+@import url("./allStyles/slideMenuStyle.css");
+@import url("./allStyles/characterStyle.css");
+@import url("./allStyles/combatStyle.css");
+@import url("./allStyles/notesStyle.css");
+@import url("./allStyles/artStyle.css");
+
+.pirata-one-regular {
+    font-family: "Pirata One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.bellefair-regular {
+  font-family: "Bellefair", serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
 body{
     display: flex;
     flex-direction: column;
     align-items: center;
     border: 0;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
     box-sizing: border-box;
     width: 80%;
     justify-self: center;
     box-sizing: border-box;
     overflow-y: scroll;
+    scrollbar-width:thin;
+    scrollbar-color: rgba(178,34,34,0.5) transparent;
+    padding: 1.5rem 1rem;
+    font-family: "Bellefair", serif;
+}
+#header {
+    width: 100%;
+    margin: 0rem 0rem 0rem 0rem;
+    box-sizing: border-box;
+    text-align: center;
+    position: sticky;
+    top: 0rem;
+    font-family: "Pirata One";
+    font-size: 4rem;
+    background-color: white;
+    z-index: 99999;
 }
 hr {
     border: none;
-    border-top: .1rem solid #ccc;
+    border-top: .1rem solid rgba(178,34,34,0.5);
     width: 100%;
     margin: .5rem 0;
 }
@@ -28,3 +56,41 @@ hr {
     overflow-x: auto;
 }
 
+#currentPage > div {
+    padding: .8rem;
+
+}
+
+.blueButton {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    font-family: "Bellefair", serif;
+    height: fit-content;
+    width: fit-content;
+    max-width: fit-content;
+    border: .4rem solid transparent;
+    border-radius: .4rem;
+    background-color:firebrick;
+    color: ivory;
+    padding: 0rem;
+    font-size: large;
+}
+
+.blueButton:hover {
+    background-color:darkred;
+}
+
+.blueButton:active {
+    background-color: firebrick;
+}
+
+.shadowBox{
+    border-radius: .4rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(67, 0, 0, 0.25);   
+}
+
+.coloredTitle{
+    color: firebrick;
+}

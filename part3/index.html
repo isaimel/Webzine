@@ -3,59 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Titles</title>
+    <title>Enter The Dungeon</title>
 
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+    <link rel="icon" href="./assets/images/favicon.ico">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet">
 </head>
 
-<body>
-    <div id="header">The DND Journey</div>
+<body class="shadowBox">
+    <div id="header" class = "coloredTitle">The DND Journey</div>
 
     <div id="lightboxContainer" style="display:none;">
-        <img id="lightboxImg" src="" alt="">
+        <img id="lightboxImg" class="shadowBox" src="" alt="">
     </div>
 
     <div id="diceDropdown">
         <div id="allDice">
-            <div id="d20">
+            <div id="d20" class = "shadowBox">
                 <img src="assets/images/d20.png" alt="A d20 die">
                 <span></span>
             </div>
-            <div id="d12">
+            <div id="d12" class = "shadowBox">
                 <img src="assets/images/d12.png" alt="A d12 die">
                 <span></span>
             </div>
-            <div id="d00">
+            <div id="d00" class = "shadowBox">
                 <img src="assets/images/d00.png" alt="A d00 die">
                 <span></span>
             </div>
-            <div id="d10">
+            <div id="d10" class = "shadowBox">
                 <img src="assets/images/d10.png" alt="A d10 die">
                 <span></span>
             </div>
-            <div id="d08">
+            <div id="d08" class = "shadowBox">
                 <img src="assets/images/d08.png" alt="A d08 die">
                 <span></span>
             </div>
-            <div id="d06">
+            <div id="d06" class = "shadowBox">
                 <img src="assets/images/d06.png" alt="A d06 die">
                 <span></span>
             </div>
-            <div id="d04">
+            <div id="d04" class = "shadowBox">
                 <img src="assets/images/d04.png" alt="A d04 die">
                 <span></span>
             </div>
         </div>
 
         <div id="dicesAndScore">
-            <div id="severalDiceRoller"></div>
-            <div id="scoreModifier"></div>
-            <div id="diceScore"></div>
+            <div id="severalDiceRoller" class = "shadowBox"></div>
+            <div id="scoreModifier" class = "shadowBox"></div>
+            <div id="diceScore" class = "shadowBox"></div>
         </div>
 
         <div id="buttonSeries">
@@ -87,7 +89,7 @@
             </div>
         </div>
 
-        <div id="currentPage">
+        <div id="currentPage"  class = "shadowBox">
 
             <div id="combatPage">
                 <div id="spellCasting"></div>
@@ -109,80 +111,79 @@
             </div>
 
             <div id="characterSheet">
-
-                <div id="basicInfo">
+                <div id="basicInfo" class = "shadowBox">
                     <div id="biCharName">
                         <div>‎</div>
                         <hr>
-                        Character Name
+                        <b class= "coloredTitle">Character Name</b>
                     </div>
 
                     <div id="biClsLvl" class="dropdown">
                         <div class="mainValue"></div>
                         <div class="dropdownList"></div>
                         <hr>
-                        Class & Level
+                        <b class= "coloredTitle">Class & Level</b>
                     </div>
 
                     <div id="biBckg">
                         <div>‎</div>
                         <hr>
-                        Background
+                        <b class= "coloredTitle">Background</b>
                     </div>
 
                     <div id="biPlayName">
                         <div>‎</div>
                         <hr>
-                        Player Name
+                        <b class= "coloredTitle">Player Name</b>
                     </div>
 
                     <div id="biRace" class="dropdown">
                         <div class="mainValue"></div>
                         <div class="dropdownList"></div>
                         <hr>
-                        Race
+                        <b class= "coloredTitle">Race</b>
                     </div>
 
                     <div id="biAlign">
                         <div>‎</div>
                         <hr>
-                        Alignment
+                        <b class= "coloredTitle">Alignment</b>
                     </div>
 
                     <div id="biExp">
                         <div>‎</div>
                         <hr>
-                        Experience Points
+                        <b class= "coloredTitle">Experience Points</b>
                     </div>
                 </div>
 
-                <div id="abilityScores">
-                    <div class="title">Ability Scores</div>
+                <div id="abilityScores" class = "shadowBox">
+                    <div class="title coloredTitle"><b>Ability Scores</b></div>
                     <div id="abilitiesGrid"></div>
                 </div>
 
-                <div id="savingThrows">
-                    <div class="title">Saving Throws</div>
+                <div id="savingThrows" class = "shadowBox">
+                    <div class="title coloredTitle"><b>Saving Throws</b></div>
                     <div id="savesGrid"></div>
                 </div>
 
-                <div id="skills">
-                    <div class="title">Skills</div>
+                <div id="skills" class = "shadowBox">
+                    <div class="title coloredTitle"><b>Skills</b></div>
                     <div id="skillsGrid"></div>
                 </div>
 
-                <div id="combat">
-                    <div class="title">Combat</div>
+                <div id="combat" class = "shadowBox">
+                    <div class="title coloredTitle"><b>Combat</b></div>
                     <div id="combatGrid"></div>
                 </div>
 
-                <div id="equipment">
-                    <div class="title">Equipment</div>
+                <div id="equipment" class = "shadowBox">
+                    <div class="title coloredTitle"><b>Equipment</b></div>
                     <div id="equipmentList"></div>
                 </div>
 
-                <div id="feats">
-                    <div class="title">Feats</div>
+                <div id="feats" class = "shadowBox">
+                    <div class="title coloredTitle"><b>Feats</b></div>
                     <div id="featsList"></div>
                 </div>
             </div>
@@ -197,15 +198,15 @@
     </div>
 
     <div id="spellTemplate">
-        <div class="spellName"><b>Name:</b> <span></span></div>
-        <div class="spellSchool"><b>School:</b> <span></span></div>
-        <div class="spellCastingTime"><b>Casting Time:</b> <span></span></div>
-        <div class="spellRange"><b>Range:</b> <span></span></div>
-        <div class="spellTarget"><b>Target(s):</b> <span></span></div>
-        <div class="spellComponents"><b>Components:</b> <span></span></div>
-        <div class="spellDuration"><b>Duration:</b> <span></span></div>
-        <div class="spellDescription"><b>Description:</b> <span></span></div>
-        <div class="spellAtHigherLvl"><b>At Higher Levels:</b> <span></span></div>
+        <div class="spellName "><b class= "coloredTitle">Name:</b> <span></span></div>
+        <div class="spellSchool"><b class= "coloredTitle">School:</b> <span></span></div>
+        <div class="spellCastingTime"><b class= "coloredTitle">Casting Time:</b> <span></span></div>
+        <div class="spellRange"><b class= "coloredTitle">Range:</b> <span></span></div>
+        <div class="spellTarget"><b class= "coloredTitle">Target(s):</b> <span></span></div>
+        <div class="spellComponents"><b class= "coloredTitle">Components:</b> <span></span></div>
+        <div class="spellDuration"><b class= "coloredTitle">Duration:</b> <span></span></div>
+        <div class="spellDescription"><b class= "coloredTitle">Description:</b> <span></span></div>
+        <div class="spellAtHigherLvl"><b class= "coloredTitle">At Higher Levels:</b> <span></span></div>
     </div>
 
 </body>

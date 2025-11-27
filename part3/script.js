@@ -1,38 +1,32 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const diceButton = document.getElementById("diceButton");
-    const diceDropdown = document.getElementById("diceDropdown");
-    const resetDiceButton = document.getElementById("resetDiceButton");
-    const openCombatButton = document.getElementById("openCombatButton");
     const allDice = document.getElementById("allDice");
     const diceHolders = allDice.querySelectorAll("div");
     const diceRolls = allDice.querySelectorAll("span");
-    const severalDiceRoller = document.getElementById("severalDiceRoller");
-    const clearDiceArray = document.getElementById("clearDiceArray");
-    const rollDiceArray = document.getElementById("rollDiceArray");
+    const diceArray = document.getElementById("severalDiceRoller");
     const dicesAndScore = document.getElementById("dicesAndScore");
     const diceScore = document.getElementById("diceScore");
     const spellsContainer = document.getElementById("spellsContainer");
     const template = document.getElementById("spellTemplate");
-    const menuToggleBtn = document.getElementById("menuToggleBtn"); 
-    const sidebar = document.getElementById("buttonSidebar");
-    const enterSpellsButton = document.getElementById("enterSpells");
-    const enterCombatButton = document.getElementById("enterCombat");
-    const showCharacterButton = document.getElementById("showCharacter");
+
+    const diceButton = document.getElementById("diceButton");
+    const resetDiceButton = document.getElementById("resetDiceButton");
+    const openCombatButton = document.getElementById("openCombatButton");
+    const clearDiceArrayButton = document.getElementById("clearDiceArray");
+    const rollDiceArrayButton = document.getElementById("rollDiceArray");
+
     const currentPage = document.getElementById("currentPage");
     const spellsPage = document.getElementById("spellsPage");
     const characterPage = document.getElementById("characterSheet");
     const combatPage = document.getElementById("combatPage");
+    const artPage = document.getElementById("artPage");
+    const notesPage = document.getElementById("notesPage");
+
     const savingThrowButton = document.getElementById("savingThrow");
     const inspirationButton = document.getElementById("inspiration");
     const advantageButton = document.getElementById("advantage");
-    const notesPageButton = document.getElementById("enterNotes");
-    const enterArtButton = document.getElementById("enterArt");
-    const artPage = document.getElementById("artPage");
 
     const lightboxContainer = document.getElementById("lightboxContainer");
     const lightboxImg = document.getElementById('lightboxImg');
-
-    const notesPage = document.getElementById("notesPage");
 
     let addedModifier = 0;
     let previouslySelectedModSkill = null;
@@ -71,16 +65,27 @@ document.addEventListener("DOMContentLoaded", function() {
             combatActive = !combatActive;
             combatState(combatActive)
         }
+        else{
+            diceButton.click();
+            combatActive = true;
+            combatState(combatActive);
+        }
     });
 
     function combatState(open){
-        clearDiceArray.click();
+        clearDiceArrayButton.click();
         allDice.style.height = open ? "12rem" : "16rem";
         dicesAndScore.style.height = open ? "6rem" : "0rem";
         openCombatButton.style.backgroundColor = open ? "gray" : "";
         openCombatButton.innerHTML = open ? "Click to Add Dice!" : "Enter Combat!";
-        clearDiceArray.style.display, rollDiceArray.style.display = open ? "flex" : "none";
+        clearDiceArrayButton.style.display = open ? "flex" : "none";
+        rollDiceArrayButton.style.display = open ? "flex" : "none";
+        if (open){
+            resetDieRolls(false);  
+        }
+        else{
             resetDieRolls(true);  
+        }
     }
 
     function diceState(open){
@@ -90,15 +95,15 @@ document.addEventListener("DOMContentLoaded", function() {
         diceButton.style.backgroundColor = open ? "gray" : "";
     }
 
-    clearDiceArray.addEventListener("click", function() {
-        severalDiceRoller.replaceChildren();
+    clearDiceArrayButton.addEventListener("click", function() {
+        diceArray.replaceChildren();
         diceScore.innerHTML="";
         if (inspirationThrow){
             const clone = document.getElementById("d08").cloneNode(true);
             clone.removeAttribute("id");
             clone.diceValue = "d08";
             clone.querySelector("span").innerHTML = "";
-            severalDiceRoller.appendChild(clone);
+            diceArray.appendChild(clone);
         }
     });
 
@@ -112,6 +117,34 @@ document.addEventListener("DOMContentLoaded", function() {
             diceRoll.innerHTML = toDot ? "&#9679;": "";
         });
     }
+
+    function diceRollWithFunction(onComplete = null) {
+        diceArray.querySelectorAll("div").forEach(die => {
+        let count = 0;
+        const interval = setInterval(() => {
+                const rollValue = getRandomNumber(die.diceValue);
+                die.querySelector("span").textContent = rollValue;
+                die.querySelector("span").style.color = diceRanges[die.diceValue][3];
+                count++;
+                if (count > 8) {
+                    onComplete();
+                    clearInterval(interval);
+                }
+            }, 60);
+        });
+    }
+
+    function rollResultWithModifier(extraModifier = 0){
+        let outputVal = 0;
+        diceArray.querySelectorAll("div").forEach(die => {
+            outputVal += Number(die.querySelector("span").textContent);
+        });
+        diceScore.innerHTML = outputVal + addedModifier + extraModifier;
+    }
+    
+    rollDiceArrayButton.addEventListener("click", function() {
+        diceRollWithFunction(rollResultWithModifier);
+    });
 
 
     diceHolders.forEach(diceContainer => {
@@ -134,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
             else{
                 const clone = diceContainer.cloneNode(true);
                 clone.removeAttribute("id");
-                severalDiceRoller.appendChild(clone);
+                diceArray.appendChild(clone);
                 clone.diceValue = diceContainer.id;
                 clone.addEventListener("click", function () {
                     clone.remove();
@@ -151,87 +184,48 @@ document.addEventListener("DOMContentLoaded", function() {
         return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled) * valuesList[2];
     }
 
-    rollDiceArray.addEventListener("click", function() {
-        severalDiceRoller.querySelectorAll("div").forEach(die => {
-        let count = 0;
-        const interval = setInterval(() => {
-                const rollValue = getRandomNumber(die.diceValue);
-                die.querySelector("span").textContent = rollValue;
-                die.querySelector("span").style.color = diceRanges[die.diceValue][3];
-                count++;
-                if (count > 8) {
-                    let outputVal = 0;
-
-                    severalDiceRoller.querySelectorAll("div").forEach(die => {
-                        outputVal += Number(die.querySelector("span").textContent);
-                    });
-                    console.log(outputVal);
-                    console.log(addedModifier);
-        
-                    diceScore.innerHTML = outputVal + addedModifier;
-                    console.log(addedModifier);
-                    clearInterval(interval);
-                }
-            }, 60);
-        });
-    });
-
     template.style.display = "none"; 
 
     function renderSpellLevels(spellData, spellsContainer, template) {
         const meta = spellData.metaMagic;
-        if (meta?.spells?.length > 0) {
-            const metaContainer = document.createElement("div");
-            metaContainer.className = "levelContainer";
 
-            const metaNameSpan = document.createElement("span");
-            metaNameSpan.className = "levelName";
-            metaNameSpan.textContent = meta.name || "Meta Magic";
-            metaContainer.appendChild(metaNameSpan);
+        const metaContainer = document.createElement("div");
+        metaContainer.className = "levelContainer";
 
-            const singleLevelSpells = document.createElement("div");
-            singleLevelSpells.className = "singleLevelSpells";
+        const metaNameSpan = document.createElement("span");
+        metaNameSpan.className = "levelName";
+        metaNameSpan.classList.add("coloredTitle");
+        // metaNameSpan.style.fontWeight = "bold";
+        metaNameSpan.textContent = "Meta Magic";
+        metaContainer.appendChild(metaNameSpan);
 
-            meta.spells.forEach(option => {
-                const spellDiv = template.cloneNode(true);
-                spellDiv.removeAttribute('id');
-                spellDiv.style.display = "block";
+        const singleLevelSpells = document.createElement("div");
+        singleLevelSpells.className = "singleLevelSpells";
 
-                spellDiv.querySelector(".spellName span").innerHTML = option.name;
-                spellDiv.querySelector(".spellDescription span").innerHTML = option.description;
+        for (const spell of meta.spells){
+            const spellDiv = template.cloneNode(true);
+            spellDiv.removeAttribute('id');
+            spellDiv.style.display = "block";
 
-                const fieldsToHide = [
-                    ".spellSchool",
-                    ".spellCastingTime",
-                    ".spellRange",
-                    ".spellTarget",
-                    ".spellComponents",
-                    ".spellDuration",
-                    ".spellAtHigherLvl"
-                ];
-                fieldsToHide.forEach(selector => {
-                    const el = spellDiv.querySelector(selector);
-                    if (el) el.style.display = "none";
-                });
+            spellDiv.querySelector(".spellName span").innerHTML = spell.name;
+            spellDiv.querySelector(".spellDescription span").innerHTML = spell.description;
 
-                const castingTimeField = spellDiv.querySelector(".spellCastingTime span");
-                if (castingTimeField) castingTimeField.textContent = `${option.cost} Sorcery Points`;
+            const castingTimeField = spellDiv.querySelector(".spellCastingTime span");
+            if (castingTimeField) castingTimeField.textContent = `${spell.cost} Sorcery Points`;
 
-                singleLevelSpells.appendChild(spellDiv);
-            });
+            singleLevelSpells.appendChild(spellDiv);
+        };
 
-            metaContainer.appendChild(singleLevelSpells);
-            spellsContainer.appendChild(metaContainer);
-        }
-
-        for (const levelKey in spellData.spells) {
-            const level = spellData.spells[levelKey];
-
+        metaContainer.appendChild(singleLevelSpells);
+        spellsContainer.appendChild(metaContainer);
+        for (const level of Object.values(spellData.spells)) {
             const levelContainer = document.createElement("div");
             levelContainer.className = "levelContainer";
 
             const levelNameSpan = document.createElement("span");
             levelNameSpan.className = "levelName";
+            levelNameSpan.classList.add("coloredTitle");
+            // levelNameSpan.style.fontWeight = "bold";
             levelNameSpan.textContent = level.name;
             levelContainer.appendChild(levelNameSpan);
 
@@ -248,30 +242,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 spellDiv.querySelector(".spellCastingTime span").innerHTML = spell.castingTime;
                 spellDiv.querySelector(".spellRange span").innerHTML = spell.range;
                 spellDiv.querySelector(".spellTarget span").innerHTML = spell.target;
-                spellDiv.querySelector(".spellComponents span").innerHTML = spell.components.join(", ");
+                spellDiv.querySelector(".spellComponents span").innerHTML = spell.components?.join(", ") || "";
                 spellDiv.querySelector(".spellDuration span").innerHTML = spell.duration;
                 spellDiv.querySelector(".spellDescription span").innerHTML = spell.description;
-                
-                if (!spell.atHigherLevels){
-                    spellDiv.querySelector(".spellAtHigherLvl").style.display = "none";
-                } else {
-                    spellDiv.querySelector(".spellAtHigherLvl span").innerHTML = spell.atHigherLevels;
-                }
+                spellDiv.querySelector(".spellAtHigherLvl span").innerHTML = spell.atHigherLevels || "";
 
                 singleLevelSpells.appendChild(spellDiv);
             });
-
             levelContainer.appendChild(singleLevelSpells);
             spellsContainer.appendChild(levelContainer);
         }
     }
-    renderSpellLevels(spellData, spellsContainer, template);
 
-    menuToggleBtn.addEventListener("click", function () {
+    document.getElementById("menuToggleBtn").addEventListener("click", function () {
         sideBarActive = !sideBarActive;
         document.getElementById("buttonSidebar").style.width = sideBarActive ? "6rem" : "";
         document.getElementById("buttonSidebar").style.height = sideBarActive ? "fit-content" : "";
-        document.getElementById("menuToggleBtn").style.backgroundColor = sideBarActive ? "rgb(95, 134, 207)" : "";
         if (!sideBarActive){
             hidePages()
             resetCombatAddons();
@@ -280,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         }
     });
-    function togglePage(button, page) {
+    function addPageTogglability(button, page) {
         button.addEventListener("click", function () {
             if (page.style.display != "flex"){
                 hidePages();
@@ -290,68 +276,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-
-    togglePage(enterSpellsButton, spellsPage);
-
-    enterSpellsButton.addEventListener("click", function () {
-        if (spellsPage.style.display != "flex"){
-            hidePages();
-            spellsPage.style.display = "flex"
-        }else{
-            hidePages();
-        }
-    });
-
-    showCharacterButton.addEventListener("click", function () {
-        if (characterPage.style.display != "flex"){
-            hidePages();
-            characterPage.style.display = "flex"
-        }else{
-            characterPage.style.display = "none"
-            hidePages();
-        }
-    });
-
-    let notes = localStorage.getItem("notesText") || "";
-
-    notesPageButton.addEventListener("click", function () {
-
-        if (notesPage.style.display != "flex") {
-            hidePages();
-            notesPage.style.display = "flex";
-
-            notesEditor.value = notes;
-        } else {
-            notesPage.style.display = "none";
-            hidePages();
-        }
-    });
-
     saveNotesButton.addEventListener("click", () => {
         notes = notesEditor.value;
         localStorage.setItem("notesText", notes);
-    });
-
-
-
-    enterCombatButton.addEventListener("click", function () {
-        if (combatPage.style.display != "flex"){
-            hidePages();
-            combatPage.style.display = "flex"
-        }else{
-            combatPage.style.display = "none"
-            hidePages();
-        }
-    });
-
-    enterArtButton.addEventListener("click", function () {
-        if (artPage.style.display != "flex"){
-            hidePages();
-            artPage.style.display = "flex"
-        }else{
-            artPage.style.display = "none"
-            hidePages();
-        }
     });
 
     function hidePages(){
@@ -359,7 +286,8 @@ document.addEventListener("DOMContentLoaded", function() {
             page.style.display = "";
         });
     }
-    function populateCharacterSheet(characterData) {
+    
+    function fillCharacterSheet(characterData) {
         const data = characterData;
 
         document.querySelector("#biCharName div").textContent = data.basicInfo.charName;
@@ -370,56 +298,31 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelector("#biAlign div").textContent = data.basicInfo.alignment;
         document.querySelector("#biExp div").textContent = data.basicInfo.experiencePoints;
 
-        const abilitiesGrid = document.getElementById("abilitiesGrid");
-        abilitiesGrid.innerHTML = "";
-        for (let [key, val] of Object.entries(data.abilityScores)) {
-            const div = document.createElement("div");
-            div.textContent = key + ": " + val + " (Mod: " + data.modifiers[key] + ")";
-            abilitiesGrid.appendChild(div);
+        function multipleFillInsSkills(entries, mixin, toAppendTo){
+            for (let [key, val] of entries) {
+                const div = document.createElement("div");
+                div.innerHTML = eval(mixin);
+                toAppendTo.appendChild(div);
+            }
         }
 
-        const savesGrid = document.getElementById("savesGrid");
-        savesGrid.innerHTML = "";
-        for (let [key, val] of Object.entries(data.savingThrows)) {
-            const div = document.createElement("div");
-            div.textContent = key + ": " + val;
-            savesGrid.appendChild(div);
+        multipleFillInsSkills(Object.entries(data.abilityScores), `key + ": " + val + "<br>(Mod: " + data.modifiers[key] + ")"`, document.getElementById("abilitiesGrid"))
+        multipleFillInsSkills(Object.entries(data.savingThrows), `key + ": " + val`, document.getElementById("savesGrid"))
+        multipleFillInsSkills(Object.entries(data.abilityScores), `key + ": " + val`, document.getElementById("skillsGrid"))
+
+        function multipleFillInsOther(entries, mixin, toAppendTo){
+            entries.forEach(text => {
+                const div = document.createElement("div");
+                div.innerHTML = eval(mixin);
+                toAppendTo.appendChild(div);
+            });
         }
-
-        const skillsGrid = document.getElementById("skillsGrid");
-        skillsGrid.innerHTML = "";
-        for (let [key, val] of Object.entries(data.skills)) {
-            const div = document.createElement("div");
-            div.textContent = key + ": " + val;
-            skillsGrid.appendChild(div);
-        }
-
-        const combatGrid = document.getElementById("combatGrid");
-        combatGrid.innerHTML = `
-            Armor Class: ${data.combat.armorClass}
-            Initiative: ${data.combat.initiative}
-            Speed: ${data.combat.speed}
-            HP: ${data.combat.hitPoints.current} / ${data.combat.hitPoints.max}
-            Hit Dice: ${data.combat.hitDice.remaining} / ${data.combat.hitDice.total} (${data.combat.hitDice.type})
-            Death Saves: Success ${data.combat.deathSaves.success}, Failure ${data.combat.deathSaves.failure}
-        `;
-
-        const equipmentList = document.getElementById("equipmentList");
-        equipmentList.innerHTML = "";
-        data.equipment.forEach(e => {
-            const div = document.createElement("div");
-            div.textContent = `${e.name} x${e.quantity}` + (e.description ? ": " + e.description : "");
-            equipmentList.appendChild(div);
-        });
-
-        const featsList = document.getElementById("featsList");
-        featsList.innerHTML = "";
-        data.feats.forEach(f => {
-            const div = document.createElement("div");
-            div.textContent = f.name;
-            featsList.appendChild(div);
-        });
+        const lines = [`Armor Class: ${data.combat.armorClass}`, `Initiative: ${data.combat.initiative}`, `Speed: ${data.combat.speed}`, `HP: ${data.combat.hitPoints.current} / ${data.combat.hitPoints.max}`, `Hit Dice: ${data.combat.hitDice.remaining} / ${data.combat.hitDice.total} (${data.combat.hitDice.type})`, `Death Saves: Success ${data.combat.deathSaves.success}, Failure ${data.combat.deathSaves.failure}`];
+        multipleFillInsOther(lines, `text`, document.getElementById("combatGrid"));
+        multipleFillInsOther(data.equipment, `text.name + " x" + text.quantity + (text.description ? ": " + text.description : "")`, document.getElementById("equipmentList"));
+        multipleFillInsOther(data.feats, `text.name`, document.getElementById("featsList"));
     }
+
     function formatClass(c) {
         const sub = c.subclass ? ` (${c.subclass})` : "";
         return `${c.name}${sub} lvl. ${c.lvl}`;
@@ -457,223 +360,78 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     
-    function fillSpellCasting(overheadContainer){
-        const abilities = {
-            dc: "DC",
-            atk: "ATK"
-        };
-        for (const [key, label] of Object.entries(abilities)) { 
-            const abilityDiv = document.createElement("div");
-            const abilityLabelSpan = document.createElement("span");
-            const abilityScoreSpan = document.createElement("span");
-            const abilityModSpan = document.createElement("span");
+    function fillCharStats(overheadContainer, dictionary, baseObj, modObj, addEvent) {
+        for (const [key, label] of Object.entries(dictionary)) { 
+            const skillDiv = document.createElement("div");
+            skillDiv.classList.add("shadowBox");
+            const skillLabel = document.createElement("span");
+            const skillBase = document.createElement("span");
+            const skillMod  = document.createElement("span");
 
-            abilityDiv.className = "abilityScore"
-            abilityDiv.ability = key;
-            abilityLabelSpan.className = "abilityLabel"
-            abilityScoreSpan.className = "abilityScore"
-            abilityModSpan.className = "abilityMod"
+            skillLabel.className = "abilityLabel";
+            skillBase.className = "abilityBase";
+            skillMod.className = "abilityMod";
 
-            abilityLabelSpan.innerHTML = label
-            abilityModSpan.innerHTML = spellData["spellcasting"][key];
-            abilityScoreSpan.innerHTML = "";
+            skillLabel.innerHTML = label;
+            skillLabel.classList.add("coloredTitle");
+            if (baseObj) {
+                skillBase.innerHTML = baseObj[key];
+            }
 
-            abilityDiv.appendChild(abilityLabelSpan);
-            abilityDiv.appendChild(abilityModSpan);
-            abilityDiv.appendChild(abilityScoreSpan);
+            if (modObj) {
+                const mod = modObj[key];
+                skillMod.innerHTML = (mod > 0 ? "+" : "") + mod;
+            }
 
-            overheadContainer.appendChild(abilityDiv)
-            if (key == "atk"){
-                abilityDiv.addEventListener("click", function () {
-                    if(!dieActive){
-                        diceButton.click();
-                    }
-                    if (!combatActive){
-                        openCombatButton.click();
-                    }
-                    if (abilityDiv == previouslySelectedModSkill){
+            skillDiv.appendChild(skillLabel);
+            skillDiv.appendChild(skillMod);
+            skillDiv.appendChild(skillBase);
+            overheadContainer.appendChild(skillDiv);
+
+            if (addEvent) {
+                skillDiv.addEventListener("click", function () {
+
+                    if (!dieActive) diceButton.click();
+                    if (!combatActive) openCombatButton.click();
+
+                    if (skillDiv == previouslySelectedModSkill) {
                         changeModifier(0);
-                        abilityDiv.style.backgroundColor = "";
+                        skillDiv.style.backgroundColor = "";
                         previouslySelectedModSkill = null;
                         return;
                     }
-                    clearDiceArray.click();
-                    changeModifier(Number(spellData["spellcasting"][key]));
-                    if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
-                    previouslySelectedModSkill = abilityDiv;
-                    previouslySelectedModSkill.style.backgroundColor = "gray";
+
+                    clearDiceArrayButton.click();
+
+                    const newMod = modObj ? Number(modObj[key]) : 0;
+                    changeModifier(newMod);
+
+                    if (previouslySelectedModSkill)
+                        previouslySelectedModSkill.style.backgroundColor = "";
+
+                    previouslySelectedModSkill = skillDiv;
+                    skillDiv.style.backgroundColor = "gray";
                 });
             }
         }
     }
 
-    function fillAbilityScores(overheadContainer){
-        const abilities = {
-            strength: "STR",
-            dexterity: "DEX",
-            constitution: "CON",
-            intelligence: "INT",
-            wisdom: "WIS",
-            charisma: "CHA"
-        };
-        for (const [key, label] of Object.entries(abilities)) { 
-            const abilityDiv = document.createElement("div");
-            const abilityLabelSpan = document.createElement("span");
-            const abilityScoreSpan = document.createElement("span");
-            const abilityModSpan = document.createElement("span");
-
-            abilityDiv.className = "abilityScore"
-            abilityDiv.ability = key;
-            abilityLabelSpan.className = "abilityLabel"
-            abilityScoreSpan.className = "abilityScore"
-            abilityModSpan.className = "abilityMod"
-
-            abilityLabelSpan.innerHTML = label
-            abilityScoreSpan.innerHTML = characterData["abilityScores"][key];
-            abilityModSpan.innerHTML = (characterData["modifiers"][key] > 0) ? "+" + characterData["modifiers"][key] : characterData["modifiers"][key];
-
-            abilityDiv.appendChild(abilityLabelSpan);
-            abilityDiv.appendChild(abilityModSpan);
-            abilityDiv.appendChild(abilityScoreSpan);
-
-            overheadContainer.appendChild(abilityDiv)
-            abilityDiv.addEventListener("click", function () {
-                if(!dieActive){
-                    diceButton.click();
-                }
-                if (!combatActive){
-                    openCombatButton.click();4
-                }
-                if (abilityDiv == previouslySelectedModSkill){
-                    changeModifier(0);
-                    abilityDiv.style.backgroundColor = "";
-                    previouslySelectedModSkill = null;
-                    return;
-                }
-                clearDiceArray.click();
-                changeModifier(Number(characterData["modifiers"][key]));
-                if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
-                previouslySelectedModSkill = abilityDiv;
-                previouslySelectedModSkill.style.backgroundColor = "gray";
-            });
-        }
+    function fillAbilityScores(overheadContainer) { 
+        fillCharStats(overheadContainer, abilitiesLabelDict, characterData.abilityScores, characterData.modifiers, true); 
     }
 
-    function fillSkillsScores(overheadContainer){
-        const skills = {
-            "acrobatics": "ACR",
-            "animal handling": "ANH",
-            "arcana": "ARC",
-            "athletics": "ATH",
-            "deception": "DEC",
-            "history": "HIS",
-            "insight": "INS",
-            "intimidation": "INTM",
-            "investigation": "INV",
-            "medicine": "MED",
-            "nature": "NAT",
-            "perception": "PRC",
-            "performance": "PRF",
-            "persuasion": "PRS",
-            "religion": "REL",
-            "sleight of hand": "SLT",
-            "stealth": "STE",
-            "survival": "SUR"
-        }
-        for (const [key, label] of Object.entries(skills)) { 
-            const skillsDiv = document.createElement("div");
-            const skillsLabelSpan = document.createElement("span");
-            const skillsScoreSpan = document.createElement("span");
-
-            skillsDiv.className = "skillsScore"
-            skillsDiv.skills = key;
-            skillsLabelSpan.className = "skillsLabel"
-            skillsScoreSpan.className = "skillsScore"
-
-            skillsLabelSpan.innerHTML = label
-            skillsScoreSpan.innerHTML = "+" + characterData["skills"][key];
-
-            skillsDiv.appendChild(skillsLabelSpan);
-            skillsDiv.appendChild(skillsScoreSpan);
-
-            overheadContainer.appendChild(skillsDiv)
-            skillsDiv.addEventListener("click", function () {
-                if(!dieActive){
-                    diceButton.click();
-                }
-                if (!combatActive){
-                    openCombatButton.click();
-                }
-                if (skillsDiv == previouslySelectedModSkill){
-                    changeModifier(0);
-                    skillsDiv.style.backgroundColor = "";
-                    previouslySelectedModSkill = null;
-                    return;
-                }
-                clearDiceArray.click();
-                changeModifier(Number(characterData["skills"][key]));
-                if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
-                previouslySelectedModSkill = skillsDiv;
-                previouslySelectedModSkill.style.backgroundColor = "gray";
-            });
-        }
+    function fillModifiers(overheadContainer) { 
+        fillCharStats(overheadContainer, abilitiesLabelDict, characterData.abilityScores, characterData.savingThrows, true); 
     }
 
-    function fillModifiers(overheadContainer) {
-        const abilities = {
-            strength: "STR",
-            dexterity: "DEX",
-            constitution: "CON",
-            intelligence: "INT",
-            wisdom: "WIS",
-            charisma: "CHA"
-        };
-        
-        for (const [key, label] of Object.entries(abilities)) { 
-            const abilityDiv = document.createElement("div");
-            const abilityLabelSpan = document.createElement("span");
-            const abilityScoreSpan = document.createElement("span");
-            const abilityModSpan = document.createElement("span");
-
-            abilityDiv.className = "abilityScore"
-            abilityDiv.ability = key;
-            abilityLabelSpan.className = "abilityLabel"
-            abilityScoreSpan.className = "abilityScore"
-            abilityModSpan.className = "abilityMod"
-
-            abilityLabelSpan.innerHTML = label
-            abilityScoreSpan.innerHTML = characterData["abilityScores"][key];
-            abilityModSpan.innerHTML = (characterData["savingThrows"][key] > 0) 
-                ? "+" + characterData["savingThrows"][key] 
-                : characterData["savingThrows"][key];
-
-            abilityDiv.appendChild(abilityLabelSpan);
-            abilityDiv.appendChild(abilityModSpan);
-            abilityDiv.appendChild(abilityScoreSpan);
-
-            overheadContainer.appendChild(abilityDiv)
-            abilityDiv.addEventListener("click", function () {
-                if(!dieActive){
-                    diceButton.click();
-                }
-                if (!combatActive){
-                    openCombatButton.click();
-                }
-                if (abilityDiv == previouslySelectedModSkill){
-                    changeModifier(0);
-                    abilityDiv.style.backgroundColor = "";
-                    previouslySelectedModSkill = null;
-                    return;
-                }
-                clearDiceArray.click();
-                addedModifier = changeModifier(Number(characterData["savingThrows"][key]));
-                if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
-                previouslySelectedModSkill = abilityDiv;
-                previouslySelectedModSkill.style.backgroundColor = "gray";
-            });
-        }
+    function fillSkillsScores(overheadContainer) {
+        fillCharStats(overheadContainer, skillsLabelDict, null, characterData.skills, true);
     }
 
+    function fillSpellCasting(overheadContainer) {
+        fillCharStats(overheadContainer, { dc: "DC" }, spellData.spellcasting, null, false); 
+        fillCharStats(overheadContainer, { atk: "ATK" }, null, spellData.spellcasting, true); 
+    }
 
     function resetCombatAddons(){
         if (savingThrow) savingThrowButton.click();
@@ -693,6 +451,7 @@ document.addEventListener("DOMContentLoaded", function() {
             previouslySelectedModSkill = null;
         }
     });
+
     let inspirationThrow = false;
     inspirationButton.addEventListener("click", function() {
         inspirationThrow = !inspirationThrow;
@@ -706,40 +465,68 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         inspirationButton.style.backgroundColor = inspirationThrow ? "gray" : "";
 
-        clearDiceArray.click();
+        clearDiceArrayButton.click();
     });
+
     let advantageThrow = false;
     advantageButton.addEventListener("click", function() {
         advantageThrow = !advantageThrow;
         advantageButton.style.backgroundColor = advantageThrow ? "gray" : "";
     });
-    fillSpellCasting(document.getElementById("combatAbilityScores"));
-    fillAbilityScores(document.getElementById("combatAbilityScores"));
-    fillSkillsScores(document.getElementById("combatSkillsScores"));
-    fillModifiers(document.getElementById("combatModifierScores"));
-    loadCombatSpells();
 
-    function loadCombatSpells() {
-        
-        const combatSpellList = document.getElementById("combatSpellList");
+    function createToggleSection(titleText, contentHTML, onLabelClick = null) {
+        const entry = document.createElement("div");
+        entry.className = "combatSpellEntry";
 
-        const meta = spellData.metaMagic;
+        const nameRow = document.createElement("div");
+        nameRow.className = "combatSpellNameRow";
 
+        const nameLabel = document.createElement("span");
+        nameLabel.textContent = titleText;
+        nameRow.appendChild(nameLabel);
+
+        const toggleButton = document.createElement("button");
+        toggleButton.classList.add("blueButton")
+        toggleButton.textContent = "Show";
+        toggleButton.classList.add("combatSpellToggle");
+        nameRow.appendChild(toggleButton);
+
+        const details = document.createElement("div");
+        details.classList.add("combatSpellDetails");
+        details.style.display = "none";
+        details.innerHTML = contentHTML;
+
+        let open = false;
+        toggleButton.addEventListener("click", () => {
+            open = !open;
+            details.style.display = open ? "flex" : "none";
+            toggleButton.textContent = open ? "Hide" : "Show";
+        });
+
+        nameLabel.addEventListener("click", onLabelClick);
+        nameLabel.classList.add("coloredTitle");
+        entry.append(nameRow, details);
+        return entry;
+    }
+
+    function createMetaMagicContainer(meta) {
         const metaDiv = document.createElement("div");
         metaDiv.className = "combatSpellLevel";
+        // metaDiv.classList.add("shadowBox");
 
-        const metaTitle = document.createElement("div");
-        metaTitle.className = "combatSpellLevelTitle";
-        metaTitle.textContent = meta.name || "Meta Magic";
-        metaDiv.appendChild(metaTitle);
+        const title = document.createElement("div");
+        title.className = "combatSpellLevelTitle";
+        title.textContent = meta.name || "Meta Magic";
+        title.classList.add("coloredTitle")
+        metaDiv.appendChild(title);
 
-        const metaContainer = document.createElement("div");
-        metaContainer.className = "spellsContainer";
-        metaContainer.style.display = "none";
-        metaDiv.appendChild(metaContainer);
+        const container = document.createElement("div");
+        container.className = "spellsContainer";
+        container.style.display = "none";
+        metaDiv.appendChild(container);
 
-        metaTitle.addEventListener("click", () => {
-            metaContainer.style.display = metaContainer.style.display != "block" ? "block" : "";
+        title.addEventListener("click", () => {
+            container.style.display = container.style.display != "flex" ? "flex" : "none";
         });
 
         const slotTracker = document.createElement("div");
@@ -751,255 +538,209 @@ document.addEventListener("DOMContentLoaded", function() {
         const slotDisplay = document.createElement("span");
         slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
         slotTracker.appendChild(slotDisplay);
+        slotTracker.classList.add("coloredTitle")
 
-        const minusBtn = document.createElement("button");
-        minusBtn.textContent = "−";
-        minusBtn.addEventListener("click", () => {
+        const minusButton = document.createElement("button");
+        minusButton.textContent = "-";
+        minusButton.classList.add("blueButton")
+        minusButton.addEventListener("click", () => {
             if (currentPoints > 0) currentPoints--;
             slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
         });
-        slotTracker.appendChild(minusBtn);
-
-        const plusBtn = document.createElement("button");
-        plusBtn.textContent = "+";
-        plusBtn.addEventListener("click", () => {
+        const plusButton = document.createElement("button");
+        plusButton.textContent = "+";
+        plusButton.classList.add("blueButton")
+        plusButton.addEventListener("click", () => {
             if (currentPoints < maxPoints) currentPoints++;
             slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
         });
-        slotTracker.appendChild(plusBtn);
+        slotTracker.append(minusButton, plusButton);
+        container.appendChild(slotTracker);
 
-        metaContainer.appendChild(slotTracker);
+        function sorceryTracker(cost) {
+            if (currentPoints >= cost) {
+                currentPoints -= cost;
+                slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
+            }
+        }
 
-        meta.spells.forEach(option => {
-            const entry = document.createElement("div");
-            entry.className = "combatSpellEntry";
-
-            const nameRow = document.createElement("div");
-            nameRow.className = "combatSpellNameRow";
-
-            const nameLabel = document.createElement("span");
-            nameLabel.textContent = option.name;
-            nameRow.appendChild(nameLabel);
-
-            const toggleBtn = document.createElement("button");
-            toggleBtn.textContent = "▼";
-            toggleBtn.className = "combatSpellToggle";
-            nameRow.appendChild(toggleBtn);
-
-            const details = document.createElement("div");
-            details.className = "combatSpellDetails";
-            details.style.display = "none";
-            details.innerHTML = `
-                <div>Description: ${option.description}</div>
-                <div>Cost: ${option.cost} Sorcery Points</div>
-            `;
-
-            let open = false;
-            toggleBtn.addEventListener("click", () => {
-                open = !open;
-                details.style.display = open ? "flex" : "none";
-                toggleBtn.textContent = open ? "▲" : "▼";
-            });
-
-            nameLabel.addEventListener("click", () => {
-                if (currentPoints >= option.cost) {
-                    currentPoints -= option.cost;
-                    slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
-                } else {
-                }
-            });
-
-            entry.appendChild(nameRow);
-            entry.appendChild(details);
-            metaContainer.appendChild(entry);
+        meta.spells.forEach(spell => {
+            let entry = createToggleSection(spell.name, `<div>Description: ${spell.description}</div><div>Cost: ${spell.cost} Sorcery Points</div>`,() => sorceryTracker(spell.cost));
+            container.appendChild(entry);
         });
 
         meta.currentPoints = currentPoints;
+        return metaDiv;
+    }
+
+    function createSpellLevelContainer(level) {
+        const levelDiv = document.createElement("div");
+        levelDiv.className = "combatSpellLevel";
+        // levelDiv.classList.add("shadowBox")
+
+        const title = document.createElement("div");
+        title.className = "combatSpellLevelTitle";
+        title.textContent = level.name;
+        title.classList.add("coloredTitle")
+        levelDiv.appendChild(title);
+
+        const container = document.createElement("div");
+        container.className = "spellsContainer";
+        container.style.display = "none";
+        levelDiv.appendChild(container);
+
+        title.addEventListener("click", () => {
+            container.style.display = container.style.display != "flex" ? "flex" : "none";
+        });
+
+        const slotTracker = document.createElement("div");
+        slotTracker.className = "spellSlotTracker";
+
+        let maxSlots = level.spellSlots;
+        let currentSlots = level.currentSlots ?? maxSlots;
+
+        const slotDisplay = document.createElement("span");
+        slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
+        slotTracker.appendChild(slotDisplay);
+        slotTracker.classList.add("coloredTitle")
+
+        const minusButton = document.createElement("button");
+        minusButton.textContent = "-";
+        minusButton.classList.add("blueButton")
+
+        minusButton.addEventListener("click", () => {
+            if (currentSlots > 0) currentSlots--;
+            slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
+        });
+        const plusButton = document.createElement("button");
+        plusButton.textContent = "+";
+        plusButton.classList.add("blueButton")
+        plusButton.addEventListener("click", () => {
+            if (currentSlots < maxSlots) currentSlots++;
+            slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
+        });
+
+        slotTracker.append(minusButton, plusButton);
+        container.appendChild(slotTracker);
+
+        function spellTracker(spell) {
+            if (maxSlots != -1 && currentSlots > 0) {
+                currentSlots--;
+                slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
+            }
+
+            if (!dieActive) diceButton.click();
+            if (!combatActive) openCombatButton.click();
+            clearDiceArrayButton.click();
+
+            let spellModifier = spell.nonDiceDamage?.reduce((sum, d) => sum + d, 0) || 0;
+            spell.damagingDice?.forEach(diceId => {
+                const diceDiv = document.getElementById(diceId)?.querySelector("img");
+                if (diceDiv) diceDiv.click();
+            });
+            diceRollWithFunction(() => rollResultWithModifier(spellModifier));
+        }
+
+        level.spells.forEach(spell => {
+            let entry = createToggleSection(spell.name, `<div>School: ${spell.school || ""}</div><div>Casting Time: ${spell.castingTime || ""}</div><div>Range: ${spell.range || ""}</div><div>Target: ${spell.target || ""}</div><div>Components: ${spell.components?.join(", ") || ""}</div><div>Duration: ${spell.duration || ""}</div><div>Description: ${spell.description || ""}</div>${spell.atHigherLevels ? `<div>At Higher Levels: ${spell.atHigherLevels}</div>` : ""}`, () => spellTracker(spell));
+            container.appendChild(entry);
+        });
+
+        level.currentSlots = currentSlots;
+        return levelDiv;
+    }
+
+    function loadCombatSpells() {
+        const combatSpellList = document.getElementById("combatSpellList");
+
+        const metaDiv = createMetaMagicContainer(spellData.metaMagic);
         combatSpellList.appendChild(metaDiv);
 
-
-
-
         for (const levelKey in spellData.spells) {
-            const level = spellData.spells[levelKey];
-
-            const levelDiv = document.createElement("div");
-            levelDiv.className = "combatSpellLevel";
-
-            const title = document.createElement("div");
-            title.className = "combatSpellLevelTitle";
-            title.textContent = level.name;
-            levelDiv.appendChild(title);
-
-            const spellsContainer = document.createElement("div");
-            spellsContainer.className = "spellsContainer";
-            spellsContainer.style.display = "none";
-            levelDiv.appendChild(spellsContainer);
-
-            title.addEventListener("click", () => {
-                spellsContainer.style.display = spellsContainer.style.display != "block" ? "block" : "";
-            });
-
-            const slotTracker = document.createElement("div");
-            slotTracker.className = "spellSlotTracker";
-
-            let maxSlots = level.spellSlots;
-            let currentSlots = level.currentSlots ?? maxSlots;
-
-            const slotDisplay = document.createElement("span");
-            slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
-            slotTracker.appendChild(slotDisplay);
-
-            const minusBtn = document.createElement("button");
-            minusBtn.textContent = "−";
-            minusBtn.addEventListener("click", () => {
-                if (currentSlots > 0) currentSlots--;
-                slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
-            });
-            slotTracker.appendChild(minusBtn);
-
-            const plusBtn = document.createElement("button");
-            plusBtn.textContent = "+";
-            plusBtn.addEventListener("click", () => {
-                if (currentSlots < maxSlots) currentSlots++;
-                slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
-            });
-            slotTracker.appendChild(plusBtn);
-
-            spellsContainer.appendChild(slotTracker);
-
-            level.spells.forEach(spell => {
-                const entry = document.createElement("div");
-                entry.className = "combatSpellEntry";
-
-                const nameRow = document.createElement("div");
-                nameRow.className = "combatSpellNameRow";
-
-                const nameLabel = document.createElement("span");
-                nameLabel.textContent = spell.name;
-                nameRow.appendChild(nameLabel);
-
-                const toggleBtn = document.createElement("button");
-                toggleBtn.textContent = "▼";
-                toggleBtn.className = "combatSpellToggle";
-                nameRow.appendChild(toggleBtn);
-
-                const details = document.createElement("div");
-                details.className = "combatSpellDetails";
-
-                details.innerHTML = `
-                    <div>School: ${spell.school}</div>
-                    <div>Casting Time: ${spell.castingTime}</div>
-                    <div>Range: ${spell.range}</div>
-                    <div>Target: ${spell.target}</div>
-                    <div>Components: ${spell.components.join(", ")}</div>
-                    <div>Duration: ${spell.duration}</div>
-                    <div>Description: ${spell.description}</div>
-                    ${spell.atHigherLevels ? `<div>At Higher Levels: ${spell.atHigherLevels}</div>` : ""}
-                `;
-
-                let open = false;
-                toggleBtn.addEventListener("click", () => {
-                    open = !open;
-                    details.style.display = open ? "flex" : "none";
-                    toggleBtn.textContent = open ? "▲" : "▼";
-                });
-
-                nameLabel.addEventListener("click", () => {
-                    if (maxSlots !== -1 && currentSlots > 0) {
-                        currentSlots--;
-                        slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
-                    }
-
-                    if (!dieActive) diceButton.click();
-                    if (!combatActive) openCombatButton.click();
-                    clearDiceArray.click();
-
-                    spell.damagingDice.forEach(diceId => {
-                        const diceDiv = document.getElementById(diceId)?.querySelector("img");
-                        if (diceDiv) diceDiv.click();
-                    });
-
-                    let spellModifier = 0;
-                    spell.nonDiceDamage.forEach(dmg => { spellModifier += dmg; });
-
-                    severalDiceRoller.querySelectorAll("div").forEach(die => {
-                        let count = 0;
-                        const interval = setInterval(() => {
-                            const rollValue = getRandomNumber(die.diceValue);
-                            die.querySelector("span").textContent = rollValue;
-                            die.querySelector("span").style.color = diceRanges[die.diceValue][3];
-                            count++;
-                            if (count > 8) {
-                                let outputVal = 0;
-                                severalDiceRoller.querySelectorAll("div").forEach(die => {
-                                    outputVal += Number(die.querySelector("span").textContent);
-                                });
-                                diceScore.innerHTML = outputVal + addedModifier + spellModifier;
-                                clearInterval(interval);
-                            }
-                        }, 60);
-                    });
-                });
-
-                entry.appendChild(nameRow);
-                entry.appendChild(details);
-                spellsContainer.appendChild(entry);
-            });
-
-            level.currentSlots = currentSlots;
-
+            const levelDiv = createSpellLevelContainer(spellData.spells[levelKey]);
             combatSpellList.appendChild(levelDiv);
         }
     }
 
-    //                    Filling Image Page
-    //_____________________________________________________________
+    function fillArtPage(){
+        fetch('https://api.are.na/v2/channels/dndrawings?per=100&t=' + Date.now())
+            .then(r => r.json())
+            .then(data => {
+                artPage.innerHTML = '';
 
-    fetch('https://api.are.na/v2/channels/dndrawings?per=100&t=' + Date.now())
-        .then(r => r.json())
-        .then(data => {
-            artPage.innerHTML = '';
+                data.contents.forEach(block => {
+                    let imageUrl = block.image?.display?.url || block.image?.large?.url || block.image?.original?.url || block.attachment?.url || (block.source?.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i) && block.source.url);
 
-            data.contents.forEach(block => {
-                let imageUrl =
-                    block.image?.display?.url ||
-                    block.image?.large?.url ||
-                    block.image?.original?.url ||
-                    block.attachment?.url ||
-                    (block.source?.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i) && block.source.url);
+                    if (!imageUrl) return;
 
-                if (!imageUrl) return;
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.loading = 'lazy';
 
-                const img = document.createElement('img');
-                img.src = imageUrl;
-                img.loading = 'lazy';
+                    img.addEventListener('click', () => {
+                        lightboxContainer.style.display = 'flex';
+                        lightboxImg.src = img.src;
+                    });
 
-                img.addEventListener('click', () => {
-                    console.log("Aaaaaaaaaaa")
-                    lightboxContainer.style.display = 'flex';
-                    lightboxImg.src = img.src;
+                    artPage.appendChild(img);
                 });
+            })
+        .catch(() => {});    
 
-                artPage.appendChild(img);
-            });
-        })
-    .catch(() => {});    
+        lightboxContainer.addEventListener('click', () => {
+            lightboxContainer.style.display = 'none';
+            lightboxImg.src = '';
+        });
+    }
+    loadCombatSpells();
 
-    artPage.addEventListener('click', event => {
-        if(event.target.tagName === 'IMG') {
-            lightboxContainer.style.display = 'flex';
-            lightboxImg.src = event.target.src;
-        }
-    });
+    renderSpellLevels(spellData, spellsContainer, template);
+    fillSpellCasting(document.getElementById("combatAbilityScores"));
+    fillAbilityScores(document.getElementById("combatAbilityScores"));
+    fillSkillsScores(document.getElementById("combatSkillsScores"));
+    fillModifiers(document.getElementById("combatModifierScores"));
 
-    lightboxContainer.addEventListener('click', () => {
-        lightboxContainer.style.display = 'none';
-        lightboxImg.src = '';
-    });
-    populateCharacterSheet(characterData);
+    addPageTogglability(document.getElementById("enterSpells"), spellsPage);
+    addPageTogglability(document.getElementById("showCharacter"), characterPage);
+    addPageTogglability(document.getElementById("enterCombat"), combatPage);
+    addPageTogglability(document.getElementById("enterArt"), artPage);
 
+    let notes = localStorage.getItem("notesText") || "";
+    addPageTogglability(document.getElementById("enterNotes"), notesPage);
+
+    fillArtPage();
+    fillCharacterSheet(characterData);
 });
+
+const abilitiesLabelDict = {
+                strength: "STR",
+                dexterity: "DEX",
+                constitution: "CON",
+                intelligence: "INT",
+                wisdom: "WIS",
+                charisma: "CHA"
+};
+
+const skillsLabelDict= {
+            "acrobatics": "ACR",
+            "animal handling": "ANH",
+            "arcana": "ARC",
+            "athletics": "ATH",
+            "deception": "DEC",
+            "history": "HIS",
+            "insight": "INS",
+            "intimidation": "INTM",
+            "investigation": "INV",
+            "medicine": "MED",
+            "nature": "NAT",
+            "perception": "PRC",
+            "performance": "PRF",
+            "persuasion": "PRS",
+            "religion": "REL",
+            "sleight of hand": "SLT",
+            "stealth": "STE",
+            "survival": "SUR"
+};
 
 const spellData = {
     "spellcasting": {
@@ -1280,7 +1021,7 @@ const characterData = {
         "constitution": 13,
         "intelligence": 13,
         "wisdom": 13,
-        "charisma": 4,
+        "charisma": 18,
     },
     "modifiers": {
         "strength": -2,
