@@ -3,6 +3,8 @@
 @import url("slideMenuStyle.css");
 @import url("characterStyle.css");
 @import url("combatStyle.css");
+@import url("notesStyle.css");
+@import url("artStyle.css");
 
 body{
     display: flex;

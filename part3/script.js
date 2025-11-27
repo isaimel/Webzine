@@ -25,7 +25,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const savingThrowButton = document.getElementById("savingThrow");
     const inspirationButton = document.getElementById("inspiration");
     const advantageButton = document.getElementById("advantage");
-    const enhanceButton = document.getElementById("enhanceAbility");
+    const notesPageButton = document.getElementById("enterNotes");
+    const enterArtButton = document.getElementById("enterArt");
+    const artPage = document.getElementById("artPage");
+
+    const lightboxContainer = document.getElementById("lightboxContainer");
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    const notesPage = document.getElementById("notesPage");
 
     let addedModifier = 0;
     let previouslySelectedModSkill = null;
@@ -55,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 openCombatButton.click();
             }
             dieActive = false;
-
         }
         diceState(dieActive);
     });
@@ -71,18 +77,10 @@ document.addEventListener("DOMContentLoaded", function() {
         clearDiceArray.click();
         allDice.style.height = open ? "12rem" : "16rem";
         dicesAndScore.style.height = open ? "6rem" : "0rem";
-        
-        dicesAndScore.style.height = open ? "6rem" : "0rem";
         openCombatButton.style.backgroundColor = open ? "gray" : "";
         openCombatButton.innerHTML = open ? "Click to Add Dice!" : "Enter Combat!";
-
-        clearDiceArray.style.display = open ? "flex" : "none";
-        rollDiceArray.style.display = open ? "flex" : "none";
-        if (open){
-            resetDieRolls(false);
-        }else{
+        clearDiceArray.style.display, rollDiceArray.style.display = open ? "flex" : "none";
             resetDieRolls(true);  
-        }
     }
 
     function diceState(open){
@@ -99,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const clone = document.getElementById("d08").cloneNode(true);
             clone.removeAttribute("id");
             clone.diceValue = "d08";
+            clone.querySelector("span").innerHTML = "";
             severalDiceRoller.appendChild(clone);
         }
     });
@@ -179,46 +178,94 @@ document.addEventListener("DOMContentLoaded", function() {
 
     template.style.display = "none"; 
 
-    for (const levelKey in spellData.spells) {
-        const level = spellData.spells[levelKey];
+    function renderSpellLevels(spellData, spellsContainer, template) {
+        const meta = spellData.metaMagic;
+        if (meta?.spells?.length > 0) {
+            const metaContainer = document.createElement("div");
+            metaContainer.className = "levelContainer";
 
-        const levelContainer = document.createElement("div");
-        levelContainer.className = "levelContainer";
+            const metaNameSpan = document.createElement("span");
+            metaNameSpan.className = "levelName";
+            metaNameSpan.textContent = meta.name || "Meta Magic";
+            metaContainer.appendChild(metaNameSpan);
 
-        const levelNameSpan = document.createElement("span");
-        levelNameSpan.className = "levelName";
-        levelNameSpan.textContent = level.name;
-        levelContainer.appendChild(levelNameSpan);
+            const singleLevelSpells = document.createElement("div");
+            singleLevelSpells.className = "singleLevelSpells";
 
-        const singleLevelSpells = document.createElement("div");
-        singleLevelSpells.className = "singleLevelSpells";
+            meta.spells.forEach(option => {
+                const spellDiv = template.cloneNode(true);
+                spellDiv.removeAttribute('id');
+                spellDiv.style.display = "block";
 
-        level.spells.forEach(spell => {
-            const spellDiv = template.cloneNode(true);
-            spellDiv.removeAttribute('id');
-            spellDiv.style.display = "block";
+                spellDiv.querySelector(".spellName span").innerHTML = option.name;
+                spellDiv.querySelector(".spellDescription span").innerHTML = option.description;
 
-            spellDiv.querySelector(".spellName span").innerHTML = spell.name;
-            spellDiv.querySelector(".spellSchool span").innerHTML = spell.school;
-            spellDiv.querySelector(".spellCastingTime span").innerHTML = spell.castingTime;
-            spellDiv.querySelector(".spellRange span").innerHTML = spell.range;
-            spellDiv.querySelector(".spellTarget span").innerHTML = spell.target;
-            spellDiv.querySelector(".spellComponents span").innerHTML = spell.components.join(", ");
-            spellDiv.querySelector(".spellDuration span").innerHTML = spell.duration;
-            spellDiv.querySelector(".spellDescription span").innerHTML = spell.description;
-            if (spell.atHigherLevels == ""){
-                spellDiv.querySelector(".spellAtHigherLvl").style.display="none";
-            }
-            else{
-                spellDiv.querySelector(".spellAtHigherLvl span").innerHTML = spell.atHigherLevels;
-            }                
+                const fieldsToHide = [
+                    ".spellSchool",
+                    ".spellCastingTime",
+                    ".spellRange",
+                    ".spellTarget",
+                    ".spellComponents",
+                    ".spellDuration",
+                    ".spellAtHigherLvl"
+                ];
+                fieldsToHide.forEach(selector => {
+                    const el = spellDiv.querySelector(selector);
+                    if (el) el.style.display = "none";
+                });
 
-            singleLevelSpells.appendChild(spellDiv);
-        });
+                const castingTimeField = spellDiv.querySelector(".spellCastingTime span");
+                if (castingTimeField) castingTimeField.textContent = `${option.cost} Sorcery Points`;
 
-        levelContainer.appendChild(singleLevelSpells);
-        spellsContainer.appendChild(levelContainer);
+                singleLevelSpells.appendChild(spellDiv);
+            });
+
+            metaContainer.appendChild(singleLevelSpells);
+            spellsContainer.appendChild(metaContainer);
+        }
+
+        for (const levelKey in spellData.spells) {
+            const level = spellData.spells[levelKey];
+
+            const levelContainer = document.createElement("div");
+            levelContainer.className = "levelContainer";
+
+            const levelNameSpan = document.createElement("span");
+            levelNameSpan.className = "levelName";
+            levelNameSpan.textContent = level.name;
+            levelContainer.appendChild(levelNameSpan);
+
+            const singleLevelSpells = document.createElement("div");
+            singleLevelSpells.className = "singleLevelSpells";
+
+            level.spells.forEach(spell => {
+                const spellDiv = template.cloneNode(true);
+                spellDiv.removeAttribute('id');
+                spellDiv.style.display = "block";
+
+                spellDiv.querySelector(".spellName span").innerHTML = spell.name;
+                spellDiv.querySelector(".spellSchool span").innerHTML = spell.school;
+                spellDiv.querySelector(".spellCastingTime span").innerHTML = spell.castingTime;
+                spellDiv.querySelector(".spellRange span").innerHTML = spell.range;
+                spellDiv.querySelector(".spellTarget span").innerHTML = spell.target;
+                spellDiv.querySelector(".spellComponents span").innerHTML = spell.components.join(", ");
+                spellDiv.querySelector(".spellDuration span").innerHTML = spell.duration;
+                spellDiv.querySelector(".spellDescription span").innerHTML = spell.description;
+                
+                if (!spell.atHigherLevels){
+                    spellDiv.querySelector(".spellAtHigherLvl").style.display = "none";
+                } else {
+                    spellDiv.querySelector(".spellAtHigherLvl span").innerHTML = spell.atHigherLevels;
+                }
+
+                singleLevelSpells.appendChild(spellDiv);
+            });
+
+            levelContainer.appendChild(singleLevelSpells);
+            spellsContainer.appendChild(levelContainer);
+        }
     }
+    renderSpellLevels(spellData, spellsContainer, template);
 
     menuToggleBtn.addEventListener("click", function () {
         sideBarActive = !sideBarActive;
@@ -233,13 +280,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
         }
     });
+    function togglePage(button, page) {
+        button.addEventListener("click", function () {
+            if (page.style.display != "flex"){
+                hidePages();
+                page.style.display = "flex"
+            }else{
+                hidePages();
+            }
+        });
+    }
+
+    togglePage(enterSpellsButton, spellsPage);
 
     enterSpellsButton.addEventListener("click", function () {
         if (spellsPage.style.display != "flex"){
             hidePages();
             spellsPage.style.display = "flex"
         }else{
-            spellsPage.style.display = "none"
             hidePages();
         }
     });
@@ -254,6 +312,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    let notes = localStorage.getItem("notesText") || "";
+
+    notesPageButton.addEventListener("click", function () {
+
+        if (notesPage.style.display != "flex") {
+            hidePages();
+            notesPage.style.display = "flex";
+
+            notesEditor.value = notes;
+        } else {
+            notesPage.style.display = "none";
+            hidePages();
+        }
+    });
+
+    saveNotesButton.addEventListener("click", () => {
+        notes = notesEditor.value;
+        localStorage.setItem("notesText", notes);
+    });
+
+
+
     enterCombatButton.addEventListener("click", function () {
         if (combatPage.style.display != "flex"){
             hidePages();
@@ -264,21 +344,82 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    enterArtButton.addEventListener("click", function () {
+        if (artPage.style.display != "flex"){
+            hidePages();
+            artPage.style.display = "flex"
+        }else{
+            artPage.style.display = "none"
+            hidePages();
+        }
+    });
+
     function hidePages(){
         currentPage.querySelectorAll("div").forEach(page => {
             page.style.display = "";
         });
     }
+    function populateCharacterSheet(characterData) {
+        const data = characterData;
 
-    const data = characterData;
-    document.querySelector("#biCharName div").textContent = data.basicInfo.charName;
-    createDropdown("#biClsLvl", data.basicInfo.classes, formatClass)
-    document.querySelector("#biBckg div").textContent = data.basicInfo.background;
-    document.querySelector("#biPlayName div").textContent = data.basicInfo.playName;
-    createDropdown("#biRace", data.basicInfo.races, formatRace)
-    document.querySelector("#biAlign div").textContent = data.basicInfo.alignment;
-    document.querySelector("#biExp div").textContent = data.basicInfo.experiencePoints;
-    
+        document.querySelector("#biCharName div").textContent = data.basicInfo.charName;
+        createDropdown("#biClsLvl", data.basicInfo.classes, formatClass);
+        document.querySelector("#biBckg div").textContent = data.basicInfo.background;
+        document.querySelector("#biPlayName div").textContent = data.basicInfo.playName;
+        createDropdown("#biRace", data.basicInfo.races, formatRace);
+        document.querySelector("#biAlign div").textContent = data.basicInfo.alignment;
+        document.querySelector("#biExp div").textContent = data.basicInfo.experiencePoints;
+
+        const abilitiesGrid = document.getElementById("abilitiesGrid");
+        abilitiesGrid.innerHTML = "";
+        for (let [key, val] of Object.entries(data.abilityScores)) {
+            const div = document.createElement("div");
+            div.textContent = key + ": " + val + " (Mod: " + data.modifiers[key] + ")";
+            abilitiesGrid.appendChild(div);
+        }
+
+        const savesGrid = document.getElementById("savesGrid");
+        savesGrid.innerHTML = "";
+        for (let [key, val] of Object.entries(data.savingThrows)) {
+            const div = document.createElement("div");
+            div.textContent = key + ": " + val;
+            savesGrid.appendChild(div);
+        }
+
+        const skillsGrid = document.getElementById("skillsGrid");
+        skillsGrid.innerHTML = "";
+        for (let [key, val] of Object.entries(data.skills)) {
+            const div = document.createElement("div");
+            div.textContent = key + ": " + val;
+            skillsGrid.appendChild(div);
+        }
+
+        const combatGrid = document.getElementById("combatGrid");
+        combatGrid.innerHTML = `
+            Armor Class: ${data.combat.armorClass}
+            Initiative: ${data.combat.initiative}
+            Speed: ${data.combat.speed}
+            HP: ${data.combat.hitPoints.current} / ${data.combat.hitPoints.max}
+            Hit Dice: ${data.combat.hitDice.remaining} / ${data.combat.hitDice.total} (${data.combat.hitDice.type})
+            Death Saves: Success ${data.combat.deathSaves.success}, Failure ${data.combat.deathSaves.failure}
+        `;
+
+        const equipmentList = document.getElementById("equipmentList");
+        equipmentList.innerHTML = "";
+        data.equipment.forEach(e => {
+            const div = document.createElement("div");
+            div.textContent = `${e.name} x${e.quantity}` + (e.description ? ": " + e.description : "");
+            equipmentList.appendChild(div);
+        });
+
+        const featsList = document.getElementById("featsList");
+        featsList.innerHTML = "";
+        data.feats.forEach(f => {
+            const div = document.createElement("div");
+            div.textContent = f.name;
+            featsList.appendChild(div);
+        });
+    }
     function formatClass(c) {
         const sub = c.subclass ? ` (${c.subclass})` : "";
         return `${c.name}${sub} lvl. ${c.lvl}`;
@@ -315,7 +456,56 @@ document.addEventListener("DOMContentLoaded", function() {
             scoreMod.innerHTML = (modifier > 0) ? "+" + modifier : modifier;
         }
     }
+    
+    function fillSpellCasting(overheadContainer){
+        const abilities = {
+            dc: "DC",
+            atk: "ATK"
+        };
+        for (const [key, label] of Object.entries(abilities)) { 
+            const abilityDiv = document.createElement("div");
+            const abilityLabelSpan = document.createElement("span");
+            const abilityScoreSpan = document.createElement("span");
+            const abilityModSpan = document.createElement("span");
 
+            abilityDiv.className = "abilityScore"
+            abilityDiv.ability = key;
+            abilityLabelSpan.className = "abilityLabel"
+            abilityScoreSpan.className = "abilityScore"
+            abilityModSpan.className = "abilityMod"
+
+            abilityLabelSpan.innerHTML = label
+            abilityModSpan.innerHTML = spellData["spellcasting"][key];
+            abilityScoreSpan.innerHTML = "";
+
+            abilityDiv.appendChild(abilityLabelSpan);
+            abilityDiv.appendChild(abilityModSpan);
+            abilityDiv.appendChild(abilityScoreSpan);
+
+            overheadContainer.appendChild(abilityDiv)
+            if (key == "atk"){
+                abilityDiv.addEventListener("click", function () {
+                    if(!dieActive){
+                        diceButton.click();
+                    }
+                    if (!combatActive){
+                        openCombatButton.click();
+                    }
+                    if (abilityDiv == previouslySelectedModSkill){
+                        changeModifier(0);
+                        abilityDiv.style.backgroundColor = "";
+                        previouslySelectedModSkill = null;
+                        return;
+                    }
+                    clearDiceArray.click();
+                    changeModifier(Number(spellData["spellcasting"][key]));
+                    if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
+                    previouslySelectedModSkill = abilityDiv;
+                    previouslySelectedModSkill.style.backgroundColor = "gray";
+                });
+            }
+        }
+    }
 
     function fillAbilityScores(overheadContainer){
         const abilities = {
@@ -438,6 +628,7 @@ document.addEventListener("DOMContentLoaded", function() {
             wisdom: "WIS",
             charisma: "CHA"
         };
+        
         for (const [key, label] of Object.entries(abilities)) { 
             const abilityDiv = document.createElement("div");
             const abilityLabelSpan = document.createElement("span");
@@ -479,7 +670,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (previouslySelectedModSkill != null) previouslySelectedModSkill.style.backgroundColor = "";
                 previouslySelectedModSkill = abilityDiv;
                 previouslySelectedModSkill.style.backgroundColor = "gray";
-
             });
         }
     }
@@ -489,7 +679,6 @@ document.addEventListener("DOMContentLoaded", function() {
         if (savingThrow) savingThrowButton.click();
         if (inspirationThrow) inspirationButton.click();
         if (advantageThrow) advantageButton.click();
-        if (enhanceAbilityThrow) enhanceButton.click();
     }
 
     let savingThrow = false;
@@ -517,30 +706,299 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         inspirationButton.style.backgroundColor = inspirationThrow ? "gray" : "";
 
-        if (inspirationThrow){
-            const clone = document.getElementById("d08").cloneNode(true);
-            clone.removeAttribute("id");
-            clone.diceValue = "d08";
-            severalDiceRoller.appendChild(clone);
-        }else{
-            clearDiceArray.click();
-        }
+        clearDiceArray.click();
     });
     let advantageThrow = false;
     advantageButton.addEventListener("click", function() {
         advantageThrow = !advantageThrow;
         advantageButton.style.backgroundColor = advantageThrow ? "gray" : "";
     });
-    let enhanceAbilityThrow = false;
-    enhanceButton.addEventListener("click", function() {
-        enhanceAbilityThrow = !enhanceAbilityThrow;
-        enhanceButton.style.backgroundColor = enhanceAbilityThrow ? "gray" : "";
-    });
+    fillSpellCasting(document.getElementById("combatAbilityScores"));
     fillAbilityScores(document.getElementById("combatAbilityScores"));
     fillSkillsScores(document.getElementById("combatSkillsScores"));
     fillModifiers(document.getElementById("combatModifierScores"));
+    loadCombatSpells();
 
-    
+    function loadCombatSpells() {
+        
+        const combatSpellList = document.getElementById("combatSpellList");
+
+        const meta = spellData.metaMagic;
+
+        const metaDiv = document.createElement("div");
+        metaDiv.className = "combatSpellLevel";
+
+        const metaTitle = document.createElement("div");
+        metaTitle.className = "combatSpellLevelTitle";
+        metaTitle.textContent = meta.name || "Meta Magic";
+        metaDiv.appendChild(metaTitle);
+
+        const metaContainer = document.createElement("div");
+        metaContainer.className = "spellsContainer";
+        metaContainer.style.display = "none";
+        metaDiv.appendChild(metaContainer);
+
+        metaTitle.addEventListener("click", () => {
+            metaContainer.style.display = metaContainer.style.display != "block" ? "block" : "";
+        });
+
+        const slotTracker = document.createElement("div");
+        slotTracker.className = "spellSlotTracker";
+
+        let maxPoints = meta.spellSlots;
+        let currentPoints = meta.currentPoints ?? maxPoints;
+
+        const slotDisplay = document.createElement("span");
+        slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
+        slotTracker.appendChild(slotDisplay);
+
+        const minusBtn = document.createElement("button");
+        minusBtn.textContent = "−";
+        minusBtn.addEventListener("click", () => {
+            if (currentPoints > 0) currentPoints--;
+            slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
+        });
+        slotTracker.appendChild(minusBtn);
+
+        const plusBtn = document.createElement("button");
+        plusBtn.textContent = "+";
+        plusBtn.addEventListener("click", () => {
+            if (currentPoints < maxPoints) currentPoints++;
+            slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
+        });
+        slotTracker.appendChild(plusBtn);
+
+        metaContainer.appendChild(slotTracker);
+
+        meta.spells.forEach(option => {
+            const entry = document.createElement("div");
+            entry.className = "combatSpellEntry";
+
+            const nameRow = document.createElement("div");
+            nameRow.className = "combatSpellNameRow";
+
+            const nameLabel = document.createElement("span");
+            nameLabel.textContent = option.name;
+            nameRow.appendChild(nameLabel);
+
+            const toggleBtn = document.createElement("button");
+            toggleBtn.textContent = "▼";
+            toggleBtn.className = "combatSpellToggle";
+            nameRow.appendChild(toggleBtn);
+
+            const details = document.createElement("div");
+            details.className = "combatSpellDetails";
+            details.style.display = "none";
+            details.innerHTML = `
+                <div>Description: ${option.description}</div>
+                <div>Cost: ${option.cost} Sorcery Points</div>
+            `;
+
+            let open = false;
+            toggleBtn.addEventListener("click", () => {
+                open = !open;
+                details.style.display = open ? "flex" : "none";
+                toggleBtn.textContent = open ? "▲" : "▼";
+            });
+
+            nameLabel.addEventListener("click", () => {
+                if (currentPoints >= option.cost) {
+                    currentPoints -= option.cost;
+                    slotDisplay.textContent = `Sorcery Points: ${currentPoints} / ${maxPoints}`;
+                } else {
+                }
+            });
+
+            entry.appendChild(nameRow);
+            entry.appendChild(details);
+            metaContainer.appendChild(entry);
+        });
+
+        meta.currentPoints = currentPoints;
+        combatSpellList.appendChild(metaDiv);
+
+
+
+
+        for (const levelKey in spellData.spells) {
+            const level = spellData.spells[levelKey];
+
+            const levelDiv = document.createElement("div");
+            levelDiv.className = "combatSpellLevel";
+
+            const title = document.createElement("div");
+            title.className = "combatSpellLevelTitle";
+            title.textContent = level.name;
+            levelDiv.appendChild(title);
+
+            const spellsContainer = document.createElement("div");
+            spellsContainer.className = "spellsContainer";
+            spellsContainer.style.display = "none";
+            levelDiv.appendChild(spellsContainer);
+
+            title.addEventListener("click", () => {
+                spellsContainer.style.display = spellsContainer.style.display != "block" ? "block" : "";
+            });
+
+            const slotTracker = document.createElement("div");
+            slotTracker.className = "spellSlotTracker";
+
+            let maxSlots = level.spellSlots;
+            let currentSlots = level.currentSlots ?? maxSlots;
+
+            const slotDisplay = document.createElement("span");
+            slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
+            slotTracker.appendChild(slotDisplay);
+
+            const minusBtn = document.createElement("button");
+            minusBtn.textContent = "−";
+            minusBtn.addEventListener("click", () => {
+                if (currentSlots > 0) currentSlots--;
+                slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
+            });
+            slotTracker.appendChild(minusBtn);
+
+            const plusBtn = document.createElement("button");
+            plusBtn.textContent = "+";
+            plusBtn.addEventListener("click", () => {
+                if (currentSlots < maxSlots) currentSlots++;
+                slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
+            });
+            slotTracker.appendChild(plusBtn);
+
+            spellsContainer.appendChild(slotTracker);
+
+            level.spells.forEach(spell => {
+                const entry = document.createElement("div");
+                entry.className = "combatSpellEntry";
+
+                const nameRow = document.createElement("div");
+                nameRow.className = "combatSpellNameRow";
+
+                const nameLabel = document.createElement("span");
+                nameLabel.textContent = spell.name;
+                nameRow.appendChild(nameLabel);
+
+                const toggleBtn = document.createElement("button");
+                toggleBtn.textContent = "▼";
+                toggleBtn.className = "combatSpellToggle";
+                nameRow.appendChild(toggleBtn);
+
+                const details = document.createElement("div");
+                details.className = "combatSpellDetails";
+
+                details.innerHTML = `
+                    <div>School: ${spell.school}</div>
+                    <div>Casting Time: ${spell.castingTime}</div>
+                    <div>Range: ${spell.range}</div>
+                    <div>Target: ${spell.target}</div>
+                    <div>Components: ${spell.components.join(", ")}</div>
+                    <div>Duration: ${spell.duration}</div>
+                    <div>Description: ${spell.description}</div>
+                    ${spell.atHigherLevels ? `<div>At Higher Levels: ${spell.atHigherLevels}</div>` : ""}
+                `;
+
+                let open = false;
+                toggleBtn.addEventListener("click", () => {
+                    open = !open;
+                    details.style.display = open ? "flex" : "none";
+                    toggleBtn.textContent = open ? "▲" : "▼";
+                });
+
+                nameLabel.addEventListener("click", () => {
+                    if (maxSlots !== -1 && currentSlots > 0) {
+                        currentSlots--;
+                        slotDisplay.textContent = `Spell Slots: ${currentSlots} / ${maxSlots}`;
+                    }
+
+                    if (!dieActive) diceButton.click();
+                    if (!combatActive) openCombatButton.click();
+                    clearDiceArray.click();
+
+                    spell.damagingDice.forEach(diceId => {
+                        const diceDiv = document.getElementById(diceId)?.querySelector("img");
+                        if (diceDiv) diceDiv.click();
+                    });
+
+                    let spellModifier = 0;
+                    spell.nonDiceDamage.forEach(dmg => { spellModifier += dmg; });
+
+                    severalDiceRoller.querySelectorAll("div").forEach(die => {
+                        let count = 0;
+                        const interval = setInterval(() => {
+                            const rollValue = getRandomNumber(die.diceValue);
+                            die.querySelector("span").textContent = rollValue;
+                            die.querySelector("span").style.color = diceRanges[die.diceValue][3];
+                            count++;
+                            if (count > 8) {
+                                let outputVal = 0;
+                                severalDiceRoller.querySelectorAll("div").forEach(die => {
+                                    outputVal += Number(die.querySelector("span").textContent);
+                                });
+                                diceScore.innerHTML = outputVal + addedModifier + spellModifier;
+                                clearInterval(interval);
+                            }
+                        }, 60);
+                    });
+                });
+
+                entry.appendChild(nameRow);
+                entry.appendChild(details);
+                spellsContainer.appendChild(entry);
+            });
+
+            level.currentSlots = currentSlots;
+
+            combatSpellList.appendChild(levelDiv);
+        }
+    }
+
+    //                    Filling Image Page
+    //_____________________________________________________________
+
+    fetch('https://api.are.na/v2/channels/dndrawings?per=100&t=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            artPage.innerHTML = '';
+
+            data.contents.forEach(block => {
+                let imageUrl =
+                    block.image?.display?.url ||
+                    block.image?.large?.url ||
+                    block.image?.original?.url ||
+                    block.attachment?.url ||
+                    (block.source?.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i) && block.source.url);
+
+                if (!imageUrl) return;
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.loading = 'lazy';
+
+                img.addEventListener('click', () => {
+                    console.log("Aaaaaaaaaaa")
+                    lightboxContainer.style.display = 'flex';
+                    lightboxImg.src = img.src;
+                });
+
+                artPage.appendChild(img);
+            });
+        })
+    .catch(() => {});    
+
+    artPage.addEventListener('click', event => {
+        if(event.target.tagName === 'IMG') {
+            lightboxContainer.style.display = 'flex';
+            lightboxImg.src = event.target.src;
+        }
+    });
+
+    lightboxContainer.addEventListener('click', () => {
+        lightboxContainer.style.display = 'none';
+        lightboxImg.src = '';
+    });
+    populateCharacterSheet(characterData);
+
 });
 
 const spellData = {
@@ -568,6 +1026,20 @@ const spellData = {
         "level_0": {
             "name": "Cantrips",
             "spells": [
+                {
+                    "name": "Mage Armor",
+                    "school": "Abjuration",
+                    "castingTime": "1 action",
+                    "range": "Touch",
+                    "target": "A willing creature not wearing armor",
+                    "components": ["V", "S", "M (a piece of cured leather)"],
+                    "duration": "8 hours",
+                    "description": "You touch a willing creature who isn’t wearing armor, and a protective magical force surrounds it until the spell ends. The target’s base AC becomes 13 + its Dexterity modifier. The spell ends if the target dons armor or if you dismiss the spell as an action.",
+                    "atHigherLevels": "",
+                    "damagingDice": [],
+                    "otherDice": [],
+                    "nonDiceDamage": []
+                },
                 {
                     "name": "Mage Hand",
                     "school": "Conjuration",
@@ -683,6 +1155,21 @@ const spellData = {
                     "description": "The gravity in a 10-foot-radius sphere centered on a point you can see within range increases for a moment. Each creature in the sphere on the turn when you cast the spell must make a Constitution saving throw. On a failed save, a creature takes 2d8 force damage, and its speed is halved until the end of its next turn. On a successful save, a creature takes half as much damage and suffers no reduction to its speed.\n\nUntil the start of your next turn, any object that isn't being worn or carried in the sphere requires a successful Strength check against your spell save DC to pick up or move.",
                     "atHigherLevels": "When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d8 for each slot level above 1st.",
                     "damagingDice": ["d08", "d08"],
+                    "otherDice": [],
+                    "nonDiceDamage": []
+                },
+                {
+                    "name": "Silvery Barbs",
+                    "school": "Enchantment",
+                    "castingTime": "1 reaction, which you take when a creature you can see within 60 feet of yourself succeeds on an attack roll, an ability check, or a saving throw",
+                    "range": "60 feet",
+                    "target": "The triggering creature and one other creature you can see within range (can be yourself)",
+                    "components": ["V"],
+                    "duration": "Instantaneous",
+                    "description": "You magically distract the triggering creature and turn its momentary uncertainty into encouragement for another creature. The triggering creature must reroll the d20 and use the lower roll. You can then choose a different creature you can see within range (you can choose yourself). The chosen creature has advantage on the next attack roll, ability check, or saving throw it makes within 1 minute. A creature can be empowered by only one use of this spell at a time.",
+                    "spellLists": ["Bard", "Sorcerer", "Wizard"],
+                    "atHigherLevels": "",
+                    "damagingDice": [],
                     "otherDice": [],
                     "nonDiceDamage": []
                 }

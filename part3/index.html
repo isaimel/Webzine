@@ -4,157 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Titles</title>
+
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div id="header">
-        The DND Journey
+    <div id="header">The DND Journey</div>
+
+    <div id="lightboxContainer" style="display:none;">
+        <img id="lightboxImg" src="" alt="">
     </div>
+
     <div id="diceDropdown">
-            <div id="allDice">
-                <div id="d20">
-                    <!-- d20 -->
-                    <img src="assets/images/d20.png" alt="A d20 die">
-                    <span></span>
-                </div>
-                <div id="d12">
-                    <!-- d12 -->
-                    <img src="assets/images/d12.png" alt="A d12 die">
-                    <span></span>    
-                </div>
-                <div id="d00">
-                    <!-- d00 -->
-                    <img src="assets/images/d00.png" alt="A d00 die">
-                    <span></span>    
-                </div>
-                <div id="d10">
-                    <!-- d10 -->
-                    <img src="assets/images/d10.png" alt="A d10 die">
-                    <span></span>    
-                </div>
-                <div id="d08">
-                    <!-- d08 -->
-                    <img src="assets/images/d08.png" alt="A d08 die">
-                    <span></span>    
-                </div>
-                <div id="d06">
-                    <!-- d06 -->
-                    <img src="assets/images/d06.png" alt="A d06 die">
-                    <span></span>    
-                </div>
-                <div id="d04">
-                    <!-- d04 -->
-                    <img src="assets/images/d04.png" alt="A d04 die">
-                    <span></span>    
-                </div>
-        </div>
-        <div id = "dicesAndScore">
-            <div id = "severalDiceRoller">
+        <div id="allDice">
+            <div id="d20">
+                <img src="assets/images/d20.png" alt="A d20 die">
+                <span></span>
             </div>
+            <div id="d12">
+                <img src="assets/images/d12.png" alt="A d12 die">
+                <span></span>
+            </div>
+            <div id="d00">
+                <img src="assets/images/d00.png" alt="A d00 die">
+                <span></span>
+            </div>
+            <div id="d10">
+                <img src="assets/images/d10.png" alt="A d10 die">
+                <span></span>
+            </div>
+            <div id="d08">
+                <img src="assets/images/d08.png" alt="A d08 die">
+                <span></span>
+            </div>
+            <div id="d06">
+                <img src="assets/images/d06.png" alt="A d06 die">
+                <span></span>
+            </div>
+            <div id="d04">
+                <img src="assets/images/d04.png" alt="A d04 die">
+                <span></span>
+            </div>
+        </div>
+
+        <div id="dicesAndScore">
+            <div id="severalDiceRoller"></div>
             <div id="scoreModifier"></div>
-            <div id = "diceScore">
-            </div>
+            <div id="diceScore"></div>
         </div>
-        
+
         <div id="buttonSeries">
             <div id="tabButtons">
-                <button type="button" id="openCombatButton" class="blueButton">
-                        Enter Combat!
-                </button>
-                <button type="button" id="clearDiceArray" class="blueButton">
-                        Clear Dice Array!
-                </button>
-                <button type="button" id="rollDiceArray" class="blueButton">
-                        Roll All Dice!
-                </button>
+                <button type="button" id="openCombatButton" class="blueButton">Enter Combat!</button>
+                <button type="button" id="clearDiceArray" class="blueButton">Clear Dice Array!</button>
+                <button type="button" id="rollDiceArray" class="blueButton">Roll All Dice!</button>
             </div>
+
             <div id="diceButtons">
-                <button type="button" id="resetDiceButton" class="blueButton">
-                    Reset!
-                </button>
-                <button type="button" id="diceButton" class="blueButton">
-                    Roll!
-                </button>
+                <button type="button" id="resetDiceButton" class="blueButton">Reset!</button>
+                <button type="button" id="diceButton" class="blueButton">Roll!</button>
             </div>
         </div>
     </div>
+
     <hr>
+
     <div id="differentPages">
-        <div id = "sideBarComp">
+        <div id="sideBarComp">
             <button id="menuToggleBtn" class="blueButton">☰</button>
-            <div id = "buttonSidebar" class="sidebar">
-                <button id = "enterCombat" class="blueButton">Enter Battle!</button>
-                <button id = "showCharacter" class="blueButton">Show Character</button>
-                <button id = "enterSpells" class="blueButton">Show Spells!</button>
-                <button class="blueButton">Show <br> Notes</button>
+
+            <div id="buttonSidebar" class="sidebar">
+                <button id="enterCombat" class="blueButton">Enter Battle!</button>
+                <button id="showCharacter" class="blueButton">Show Character</button>
+                <button id="enterSpells" class="blueButton">Show Spells!</button>
+                <button id="enterNotes" class="blueButton">Show <br> Notes</button>
+                <button id="enterArt" class="blueButton">Show <br> Artwork</button>
             </div>
         </div>
+
         <div id="currentPage">
-            <div id = "combatPage">
+
+            <div id="combatPage">
+                <div id="spellCasting"></div>
+
                 <div id="modificationButtons">
-                    <button id = "savingThrow" class="blueButton">Saving Throw?</button>
-                    <button id = "inspiration" class="blueButton">Bardic Inspiration?</button>
-                    <button id = "enhanceAbility" class="blueButton"> Enhance Ability?</button>
-                    <button id = "advantage" class="blueButton"> Advantage?</button>
-                </div>
-                <div id = "combatAbilityScores">
-                </div>
-                <div id = "combatModifierScores">
-                </div>
-                <div id = "combatSkillsScores">
+                    <button id="savingThrow" class="blueButton">Saving Throw?</button>
+                    <button id="inspiration" class="blueButton">Bardic Inspiration?</button>
+                    <button id="advantage" class="blueButton">Advantage?</button>
                 </div>
 
+                <div id="combatAbilityScores"></div>
+                <div id="combatModifierScores"></div>
+                <div id="combatSkillsScores"></div>
+                <div id="combatSpellList"></div>
             </div>
+
             <div id="spellsPage">
-                <div class = "spellsText">Spells</div>
-                <div id = "spellsContainer">
-                </div>
+                <div id="spellsContainer"></div>
             </div>
-            <div id = "characterSheet">
+
+            <div id="characterSheet">
+
                 <div id="basicInfo">
                     <div id="biCharName">
                         <div>‎</div>
                         <hr>
                         Character Name
                     </div>
+
                     <div id="biClsLvl" class="dropdown">
                         <div class="mainValue"></div>
                         <div class="dropdownList"></div>
                         <hr>
                         Class & Level
                     </div>
-                    <div id= "biBckg">
-                        <div>‎ </div>
+
+                    <div id="biBckg">
+                        <div>‎</div>
                         <hr>
                         Background
                     </div>
-                    <div id = "biPlayName">
-                        <div>‎ </div>
+
+                    <div id="biPlayName">
+                        <div>‎</div>
                         <hr>
                         Player Name
                     </div>
+
                     <div id="biRace" class="dropdown">
                         <div class="mainValue"></div>
                         <div class="dropdownList"></div>
                         <hr>
-                        Class & Level
+                        Race
                     </div>
-                    <div id = "biAlign">
-                        <div>‎ </div>
+
+                    <div id="biAlign">
+                        <div>‎</div>
                         <hr>
                         Alignment
                     </div>
-                    <div id = "biExp">
-                        <div>‎ </div>
+
+                    <div id="biExp">
+                        <div>‎</div>
                         <hr>
                         Experience Points
                     </div>
                 </div>
+
+                <div id="abilityScores">
+                    <div class="title">Ability Scores</div>
+                    <div id="abilitiesGrid"></div>
+                </div>
+
+                <div id="savingThrows">
+                    <div class="title">Saving Throws</div>
+                    <div id="savesGrid"></div>
+                </div>
+
+                <div id="skills">
+                    <div class="title">Skills</div>
+                    <div id="skillsGrid"></div>
+                </div>
+
+                <div id="combat">
+                    <div class="title">Combat</div>
+                    <div id="combatGrid"></div>
+                </div>
+
+                <div id="equipment">
+                    <div class="title">Equipment</div>
+                    <div id="equipmentList"></div>
+                </div>
+
+                <div id="feats">
+                    <div class="title">Feats</div>
+                    <div id="featsList"></div>
+                </div>
             </div>
 
+            <div id="notesPage">
+                <textarea id="notesEditor">a</textarea>
+                <button id="saveNotesButton" class="blueButton">Save Notes</button>
+            </div>
+
+            <div id="artPage"></div>
         </div>
     </div>
 
@@ -169,5 +207,6 @@
         <div class="spellDescription"><b>Description:</b> <span></span></div>
         <div class="spellAtHigherLvl"><b>At Higher Levels:</b> <span></span></div>
     </div>
+
 </body>
 </html>

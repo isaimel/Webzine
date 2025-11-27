@@ -74,7 +74,8 @@
 
 #combatSkillsScores{
     display: inline-flex;
-    align-items: center;
+    align-items: space;
+    justify-content: space-around;
     justify-self: center;
     overflow-x: auto;
     overflow-y: hidden;
@@ -111,3 +112,99 @@
 .skillsScore{
     font-size: 1rem;
 }
+
+#combatSpellList {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
+    transition: .4s;
+}
+
+.combatSpellLevel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: .4rem;
+    transition: .4s;
+}
+.spellsContainer {
+    display: none;
+}
+
+.combatSpellLevelTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: left;
+    transition: .4s;
+}
+
+.spellSlotTracker {
+    display: inline-flex;  
+    align-items: center;   
+    gap: 1rem;             
+    width: fit-content;    
+    margin-bottom: 0.5rem; 
+}
+
+.spellSlotTracker button {
+    cursor: pointer;       
+}
+
+.combatSpellEntry {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: .6rem;
+    box-shadow: 0 0.2rem 0.6rem rgba(0,0,0,0.25);
+    padding: .4rem .6rem;
+    box-sizing: border-box;
+    transition: .3s;
+    margin: .6rem;
+}
+
+.combatSpellEntry:hover {
+    transform: scale(1.01);
+}
+
+.combatSpellNameRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    width: 100%;
+    transition: .4s;
+}
+
+.combatSpellToggle {
+    border: none;
+    background: transparent;
+    font-size: 1.2rem;
+    padding: .1rem .4rem;
+    border-radius: .3rem;
+    transition: .2s;
+}
+
+.combatSpellToggle:hover {
+    transform: scale(1.2);
+}
+
+.combatSpellDetails {
+    display: none;
+    margin-top: .4rem;
+    padding-top: .4rem;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    font-size: .95rem;
+    line-height: 1.2rem;
+    flex-direction: column;
+    gap: .2rem;
+    transition: .4s;
+}
+
+ 

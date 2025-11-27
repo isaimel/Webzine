@@ -2,115 +2,83 @@
     display: none;
     width: 100%;
     margin: 0;
-    padding: .4rem;
+    padding: 0.5rem;
     box-sizing: border-box;
-    /* border-radius: .4rem; */
-    /* box-shadow: 0 0.2rem 0.8rem rgba(0,0,0,0.25); */
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+}
+
+#characterSheet hr{
+    margin: .2rem 0;
+}
+
+.title {
+    font-size: 1.2rem;
+    margin: 0.5rem 0 0.2rem 0;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0,0,0,0.25);
+    background-color: #fdfdfd;
+}
+
+#abilitiesGrid, #savesGrid, #skillsGrid, #combatGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.5rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0,0,0,0.25);
+    background-color: #fdfdfd;
+}
+
+#equipmentList, #featsList, #notesList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    border-radius: 0.6rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0,0,0,0.25);
+    background-color: #fdfdfd;
+}
+
+#abilityScores div, #savingThrows div, #skills div, #combat div, 
+#equipment div, #feats div, #notes div {
+    padding: 0.3rem 0.5rem;
+    background-color: rgba(200,200,200,0.1);
+    border-radius: 0.4rem;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 #basicInfo {
-    display: grid;
-    grid-template-columns: .8fr 1fr 1fr 1fr; 
-    grid-template-rows: auto auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
-#biCharName {
-    grid-column: 1 / 2;  
-    grid-row: 1 / 3;     
+#basicInfo > div {
+    flex: 1 1 15rem;
+    padding: 0.4rem;
+    border-radius: 0.4rem;
+    box-shadow: 0 0.2rem 0.8rem rgba(0,0,0,0.25);
+    background-color: #fafafa;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-}
-
-#biClsLvl {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-}
-
-#biBckg {
-    grid-column: 3 / 4;
-    grid-row: 1 / 2;
-}
-
-#biPlayName {
-    grid-column: 4 / 5;
-    grid-row: 1 / 2;
-}
-
-#biRace {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-}
-
-#biAlign {
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
-}
-
-#biExp {
-    grid-column: 4 / 5;
-    grid-row: 2 / 3;
-}
-
-#basicInfo div {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    margin: .5rem;
 }
 
 #basicInfo div div {
-    font-size: 1.12rem;
+    font-size: 1rem;
     font-weight: bold;
-    margin: 0;
-    width: 100%;
-
-}
-
-#basicInfo div hr {
-    border: none;
-    border-top: 0.06rem solid black;
-    margin: 0.25rem 0;
-    width: 100%;
-}
-
-#biClsLvl {
-    position: relative;
-}
-
-#biClsLvl .dropdownList {
-    display: none;
-    position: absolute;
-    top: 1.4rem;
-    left: 0;
-    z-index: 9999;
-    background-color: whitesmoke;
-}
-
-#biClsLvl:hover .dropdownList {
-    border-style: solid;
-    border-color: grey;   
-    border-width: 0rem .12rem .12rem .12rem;
-    display: block;
-}
-
-#biRace {
-    position: relative;
-}
-
-#biRace .dropdownList {
-    display: none;
-    position: absolute;
-    top: 1.4rem;
-    left: 0;
-    z-index: 9999;
-    background-color: whitesmoke;
-}
-
-#biRace:hover .dropdownList {
-    border-style: solid;
-    border-color: grey;   
-    border-width: 0rem .12rem .12rem .12rem;
-    display: block;
-
 }
